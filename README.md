@@ -50,7 +50,7 @@ Studimi is a full-stack web application designed to help students **share, acces
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
    ```
-   4. **Run the App**
+4. **Run the App**
    
    *Start backend:*
    ```bash
@@ -90,3 +90,4 @@ studimi-platform/
 * 🔔 Notification system
 * 📊 Admin panel for moderation
 
+Currently working on some updation...
