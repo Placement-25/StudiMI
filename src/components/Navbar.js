@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 
 const navItems = [
   { path: "/materials", label: "Materials" },
-  { path: "/labs", label: "Labs" },
-  { path: "/projects", label: "Projects" },
-  { path: "/knowledge-zone", label: "Knowledge Zone" },
-  { path: "/placement", label: "Placement" },
+  { path: "/Labs", label: "Labs" },
+  { path: "/Projects", label: "Projects" },
+  { path: "/Kzone", label: "Knowledge Zone" },
+  { path: "/Placement", label: "Placement" },
 ];
 
 const Navbar = () => {
@@ -34,7 +34,7 @@ const Navbar = () => {
       } px-3 shadow`}
     >
       <Link className="navbar-brand fw-bold" to="/">
-        Studimi
+        StudiMI
       </Link>
       <button
         className="navbar-toggler"

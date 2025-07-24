@@ -63,7 +63,7 @@ const Home = () => {
               <p className="card-text text-muted">
                 Aptitude tests, interview tips, coding prep, and resume help.
               </p>
-              <Link to="/placement" className="btn btn-danger btn-sm">
+              <Link to="/Placement" className="btn btn-danger btn-sm">
                 Get Started
               </Link>
             </div>
