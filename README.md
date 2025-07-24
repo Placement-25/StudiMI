@@ -1,7 +1,7 @@
 # Studimi – Study Resource Web Platform
 
 Studimi is a full-stack web application designed to help students **share, access, and organize study resources efficiently**. Built with **React.js**, **Node.js**, and **MongoDB**, this platform enables secure collaboration through an intuitive UI, streamlined resource management, and search functionality.
-
+This Website helps every student there academics as well as placement preparation.
 ## 🚀 Features
 
 - 🔐 **User Authentication** – Secure registration and login system using JWT  
