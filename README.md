@@ -65,24 +65,6 @@ This Website helps every student there academics as well as placement preparatio
 ---
 
 
-## 🧩 Folder Structure
-
-```
-studimi-platform/
-├── client/               # React Frontend
-│   └── src/
-│       ├── components/
-│       ├── pages/
-│       └── utils/
-├── server/               # Node.js Backend
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   └── middleware/
-```
-
----
-
 ## 🧠 Future Improvements
 
 * ✏️ Add file previews and PDF annotation
