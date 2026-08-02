@@ -1,14 +1,34 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./Materials.css";
+import PdfViewerModal from "./PdfViewerModal";
+import {
+  FiBookOpen,
+  FiSearch,
+  FiGrid,
+  FiList,
+  FiStar,
+  FiFileText,
+  FiDownload,
+  FiBookmark,
+  FiShare2,
+  FiCheck,
+  FiX,
+  FiUser,
+  FiSliders,
+  FiChevronDown,
+  FiChevronUp,
+  FiRotateCcw,
+} from "react-icons/fi";
 
 const Materials = () => {
   const [selectedBranch, setSelectedBranch] = useState("all");
   const [selectedSemester, setSelectedSemester] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
+  const [showFilters, setShowFilters] = useState(false);
   const [filteredMaterials, setFilteredMaterials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedPreview, setSelectedPreview] = useState(null);
+  const [selectedPdfModal, setSelectedPdfModal] = useState(null);
   const [toastMessage, setToastMessage] = useState("");
   
   const [bookmarks, setBookmarks] = useState(() => {
@@ -30,13 +50,13 @@ const Materials = () => {
   };
 
   const branches = [
-    { id: "all", name: "All Branches", icon: "🎓", color: "#667eea" },
-    { id: "cse", name: "Computer Science", icon: "💻", color: "#4ecdc4" },
-    { id: "ece", name: "Electronics & Comm", icon: "📡", color: "#45b7d1" },
-    { id: "me", name: "Mechanical Engg", icon: "⚙️", color: "#f39c12" },
-    { id: "ce", name: "Civil Engg", icon: "🏗️", color: "#e74c3c" },
-    { id: "ee", name: "Electrical Engg", icon: "⚡", color: "#9b59b6" },
-    { id: "it", name: "Info Tech", icon: "🌐", color: "#2ecc71" },
+    { id: "all", name: "All Branches" },
+    { id: "cse", name: "Computer Science" },
+    { id: "ece", name: "Electronics & Comm" },
+    { id: "me", name: "Mechanical Engg" },
+    { id: "ce", name: "Civil Engg" },
+    { id: "ee", name: "Electrical Engg" },
+    { id: "it", name: "Info Tech" },
   ];
 
   const semesters = [
@@ -66,6 +86,7 @@ const Materials = () => {
         rating: 4.8,
         lastUpdated: "2024-01-15",
         author: "Prof. Smith",
+        pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
         description:
           "Comprehensive notes covering arrays, linked lists, trees, graphs, and dynamic programming with examples.",
         topics: [
@@ -92,6 +113,7 @@ const Materials = () => {
         rating: 4.7,
         lastUpdated: "2024-02-10",
         author: "Dr. Johnson",
+        pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         description:
           "Complete textbook covering relational databases, SQL, normalization, and transaction management.",
         topics: [
@@ -118,6 +140,7 @@ const Materials = () => {
         rating: 4.6,
         lastUpdated: "2024-01-28",
         author: "Prof. Williams",
+        pdfUrl: "https://raw.githubusercontent.com/pdfobject/pdfobject.github.io/master/sample-3d.pdf",
         description:
           "In-depth coverage of signal processing techniques, filters, and transform methods.",
         topics: [
@@ -143,6 +166,7 @@ const Materials = () => {
         rating: 4.5,
         lastUpdated: "2024-02-05",
         author: "Dr. Brown",
+        pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
         description:
           "Essential concepts of thermodynamics including laws, cycles, and applications in engineering.",
         topics: [
@@ -157,7 +181,7 @@ const Materials = () => {
       },
       {
         id: 5,
-        title: "Structural Analysis",
+        title: "Structural Analysis & Mechanics",
         subject: "Structures",
         branch: "ce",
         semester: "4",
@@ -168,6 +192,7 @@ const Materials = () => {
         rating: 4.4,
         lastUpdated: "2024-01-20",
         author: "Prof. Davis",
+        pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
         description:
           "Comprehensive guide to analyzing structures, beams, trusses, and frames.",
         topics: [
@@ -193,303 +218,234 @@ const Materials = () => {
         rating: 4.7,
         lastUpdated: "2024-02-12",
         author: "Dr. Wilson",
+        pdfUrl: "https://raw.githubusercontent.com/pdfobject/pdfobject.github.io/master/sample-3d.pdf",
         description:
           "Complete coverage of power generation, transmission, and distribution systems.",
         topics: [
           "Power Generation",
           "Transmission Lines",
+          "Fault Analysis",
           "Protection",
-          "Grid Systems",
         ],
         difficulty: "Advanced",
-        pages: 380,
-        language: "English",
-      },
-      {
-        id: 7,
-        title: "Web Development Complete Course",
-        subject: "Web Dev",
-        branch: "it",
-        semester: "5",
-        type: "video",
-        format: "MP4",
-        size: "2.1 GB",
-        downloads: 892,
-        rating: 4.9,
-        lastUpdated: "2024-02-08",
-        author: "Tech Academy",
-        description:
-          "Full-stack web development course covering HTML, CSS, JavaScript, React, and Node.js.",
-        topics: ["HTML", "CSS", "JavaScript", "React", "Node.js", "MongoDB"],
-        difficulty: "Beginner",
-        duration: "45 hours",
-        language: "English",
-      },
-      {
-        id: 8,
-        title: "Machine Learning Basics",
-        subject: "ML",
-        branch: "cse",
-        semester: "7",
-        type: "notes",
-        format: "PDF",
-        size: "7.3 MB",
-        downloads: 1156,
-        rating: 4.8,
-        lastUpdated: "2024-02-14",
-        author: "Prof. Anderson",
-        description:
-          "Introduction to machine learning algorithms, supervised and unsupervised learning.",
-        topics: [
-          "Supervised Learning",
-          "Unsupervised Learning",
-          "Neural Networks",
-          "Deep Learning",
-        ],
-        difficulty: "Advanced",
-        pages: 165,
+        pages: 510,
         language: "English",
       },
     ],
     []
   );
 
-  const [materialsList, setMaterialsList] = useState(initialMaterials);
-
   useEffect(() => {
     setIsLoading(true);
-    const timer = setTimeout(() => {
-      const filtered = materialsList.filter((material) => {
-        const matchesBranch =
-          selectedBranch === "all" || material.branch === selectedBranch;
-        const matchesSemester =
-          selectedSemester === "all" || material.semester === selectedSemester;
-        const matchesSearch =
-          material.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          material.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          material.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          material.topics.some((topic) =>
-            topic.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        return matchesBranch && matchesSemester && matchesSearch;
-      });
-      setFilteredMaterials(filtered);
+    setTimeout(() => {
+      let result = initialMaterials;
+      if (selectedBranch !== "all") {
+        result = result.filter((item) => item.branch === selectedBranch);
+      }
+      if (selectedSemester !== "all") {
+        result = result.filter((item) => item.semester === selectedSemester);
+      }
+      if (searchTerm) {
+        const query = searchTerm.toLowerCase();
+        result = result.filter(
+          (item) =>
+            item.title.toLowerCase().includes(query) ||
+            item.subject.toLowerCase().includes(query) ||
+            item.description.toLowerCase().includes(query) ||
+            item.topics.some((t) => t.toLowerCase().includes(query))
+        );
+      }
+      setFilteredMaterials(result);
       setIsLoading(false);
-    }, 200);
+    }, 250);
+  }, [selectedBranch, selectedSemester, searchTerm, initialMaterials]);
 
-    return () => clearTimeout(timer);
-  }, [selectedBranch, selectedSemester, searchTerm, materialsList]);
-
-  const handleDownload = (id, title) => {
-    setMaterialsList((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, downloads: item.downloads + 1 } : item
-      )
-    );
-    showToast(`Downloading "${title}"...`);
-  };
+  const activeFiltersCount = (selectedBranch !== "all" ? 1 : 0) + (selectedSemester !== "all" ? 1 : 0);
 
   const toggleBookmark = (id) => {
     if (bookmarks.includes(id)) {
-      setBookmarks((prev) => prev.filter((bId) => bId !== id));
+      setBookmarks(bookmarks.filter((item) => item !== id));
       showToast("Removed from bookmarks");
     } else {
-      setBookmarks((prev) => [...prev, id]);
-      showToast("Added to bookmarks!");
+      setBookmarks([...bookmarks, id]);
+      showToast("Added to bookmarks");
+    }
+  };
+
+  const handleDownload = (title, url) => {
+    showToast(`Starting PDF Download for ${title}...`);
+    if (url) {
+      window.open(url, "_blank");
     }
   };
 
   const handleShare = (title) => {
-    navigator.clipboard?.writeText(window.location.href);
-    showToast(`Link for "${title}" copied to clipboard!`);
-  };
-
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty) {
-      case "Beginner":
-        return "#28a745";
-      case "Intermediate":
-        return "#ffc107";
-      case "Advanced":
-        return "#dc3545";
-      default:
-        return "#6c757d";
-    }
-  };
-
-  const getTypeIcon = (type) => {
-    switch (type) {
-      case "notes":
-        return "📝";
-      case "book":
-        return "📚";
-      case "video":
-        return "🎥";
-      default:
-        return "📄";
+    if (navigator.share) {
+      navigator.share({
+        title: title,
+        text: `Check out ${title} on StudiMI Academic Hub!`,
+        url: window.location.href,
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      showToast("Material link copied to clipboard");
     }
   };
 
   return (
-    <div className="materials-container position-relative">
-      {/* Toast alert notification */}
+    <div className="materials-container pb-5">
       {toastMessage && (
-        <div
-          className="position-fixed bottom-0 end-0 m-4 px-4 py-3 bg-primary text-white rounded-3 shadow-lg z-3 border border-light animate__animated animate__fadeInUp"
-          style={{ zIndex: 9999 }}
-        >
-          ✨ {toastMessage}
+        <div className="position-fixed bottom-0 end-0 m-4 px-4 py-3 bg-dark text-white rounded-3 shadow-lg z-3 d-flex align-items-center gap-2">
+          <FiCheck size={18} className="text-success" />
+          <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Hero Section */}
-      <section className="materials-hero text-center py-5">
+      {/* Header Section */}
+      <section className="py-4 mb-4 bg-body-tertiary border-bottom">
         <div className="container">
-          <div className="hero-content">
-            <h1 className="hero-title display-5 fw-bold mb-3">
-              Study <span className="gradient-text">Materials</span> Hub
-            </h1>
-            <p className="hero-description lead mb-4 text-muted mx-auto" style={{ maxWidth: "700px" }}>
-              Access comprehensive study materials, textbooks, notes, and resources for all engineering branches and semesters.
-            </p>
-            <div className="hero-stats d-flex justify-content-center gap-4 flex-wrap">
-              <div className="stat-item p-3 rounded-4 shadow-sm bg-body">
-                <div className="stat-icon fs-2">📚</div>
-                <div className="stat-info">
-                  <span className="stat-number fw-bold fs-4">500+</span>
-                  <span className="stat-label text-muted d-block small">Materials</span>
-                </div>
-              </div>
-              <div className="stat-item p-3 rounded-4 shadow-sm bg-body">
-                <div className="stat-icon fs-2">🎓</div>
-                <div className="stat-info">
-                  <span className="stat-number fw-bold fs-4">7</span>
-                  <span className="stat-label text-muted d-block small">Branches</span>
-                </div>
-              </div>
-              <div className="stat-item p-3 rounded-4 shadow-sm bg-body">
-                <div className="stat-icon fs-2">📊</div>
-                <div className="stat-info">
-                  <span className="stat-number fw-bold fs-4">50K+</span>
-                  <span className="stat-label text-muted d-block small">Downloads</span>
-                </div>
-              </div>
+          <h1 className="display-6 fw-bold mb-2 text-body d-flex align-items-center gap-3">
+            <div className="p-2 bg-primary-subtle text-primary rounded-3 d-inline-flex">
+              <FiBookOpen size={26} />
             </div>
-          </div>
+            <span>Academic Study Materials</span>
+          </h1>
+          <p className="lead text-muted m-0 fs-6" style={{ maxWidth: "720px" }}>
+            Access verified lecture notes, reference textbooks, and syllabus question banks with built-in online PDF reader capability.
+          </p>
         </div>
       </section>
 
-      {/* Search and Filter Section */}
-      <section className="filter-section py-4 border-top border-bottom bg-body-tertiary">
+      {/* Search & Collapsible Filters Bar */}
+      <section className="mb-4">
         <div className="container">
-          <div className="row g-3 align-items-center mb-4">
-            <div className="col-lg-9">
-              <div className="input-group input-group-lg shadow-sm rounded-4 overflow-hidden">
-                <span className="input-group-text bg-body border-end-0">🔍</span>
-                <input
-                  type="text"
-                  placeholder="Search materials, subjects, topics, or authors..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="form-control border-start-0 bg-body shadow-none"
-                />
-                {searchTerm && (
+          <div className="bg-body-tertiary p-3 p-md-4 rounded-4 shadow-sm border mb-4">
+            <div className="row g-3 align-items-center">
+              <div className="col-md-6">
+                <div className="input-group shadow-sm rounded-3 overflow-hidden border">
+                  <span className="input-group-text bg-body border-end-0 text-muted">
+                    <FiSearch size={18} />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Search by subject, title, author, or topic..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="form-control border-start-0 bg-body shadow-none"
+                  />
+                  {searchTerm && (
+                    <button
+                      className="btn btn-outline-secondary border-start-0 bg-body text-muted"
+                      onClick={() => setSearchTerm("")}
+                    >
+                      <FiX size={16} />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-md-6 d-flex align-items-center justify-content-md-end gap-2 flex-wrap">
+                <button
+                  className={`btn btn-filter-toggle d-flex align-items-center gap-2 ${
+                    showFilters || activeFiltersCount > 0 ? "active" : ""
+                  }`}
+                  onClick={() => setShowFilters(!showFilters)}
+                >
+                  <FiSliders size={16} />
+                  <span>Filter Options</span>
+                  {activeFiltersCount > 0 && (
+                    <span className="badge bg-primary text-white rounded-pill ms-1 px-2">
+                      {activeFiltersCount}
+                    </span>
+                  )}
+                  {showFilters ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+                </button>
+
+                {activeFiltersCount > 0 && (
                   <button
-                    className="btn btn-outline-secondary border-start-0 bg-body"
-                    onClick={() => setSearchTerm("")}
+                    className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                    onClick={() => {
+                      setSelectedBranch("all");
+                      setSelectedSemester("all");
+                    }}
+                    title="Reset Filters"
                   >
-                    ✕
+                    <FiRotateCcw size={14} />
+                    <span className="d-none d-sm-inline">Reset</span>
                   </button>
                 )}
-              </div>
-            </div>
 
-            <div className="col-lg-3 d-flex justify-content-lg-end">
-              <div className="btn-group w-100 shadow-sm rounded-3">
-                <button
-                  className={`btn ${viewMode === "grid" ? "btn-primary" : "btn-outline-primary"}`}
-                  onClick={() => setViewMode("grid")}
-                >
-                  ▦ Grid
-                </button>
-                <button
-                  className={`btn ${viewMode === "list" ? "btn-primary" : "btn-outline-primary"}`}
-                  onClick={() => setViewMode("list")}
-                >
-                  ☰ List
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="row g-3">
-            <div className="col-12">
-              <label className="fw-semibold mb-2">Filter by Branch:</label>
-              <div className="d-flex flex-wrap gap-2">
-                {branches.map((branch) => (
+                <div className="btn-group border rounded-3 p-1 bg-body ms-auto ms-md-0">
                   <button
-                    key={branch.id}
-                    className={`btn btn-sm rounded-pill px-3 py-2 border transition-all ${
-                      selectedBranch === branch.id
-                        ? "btn-primary shadow"
-                        : "btn-outline-secondary"
-                    }`}
-                    onClick={() => setSelectedBranch(branch.id)}
+                    className={`btn btn-sm ${viewMode === "grid" ? "btn-primary" : "btn-light"}`}
+                    onClick={() => setViewMode("grid")}
+                    title="Grid View"
                   >
-                    <span className="me-1">{branch.icon}</span>
-                    {branch.name}
+                    <FiGrid size={15} />
                   </button>
-                ))}
+                  <button
+                    className={`btn btn-sm ${viewMode === "list" ? "btn-primary" : "btn-light"}`}
+                    onClick={() => setViewMode("list")}
+                    title="List View"
+                  >
+                    <FiList size={15} />
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div className="col-12 mt-3">
-              <label className="fw-semibold mb-2">Filter by Semester:</label>
-              <div className="d-flex flex-wrap gap-2">
-                {semesters.map((semester) => (
-                  <button
-                    key={semester.id}
-                    className={`btn btn-sm rounded-pill px-3 py-2 border transition-all ${
-                      selectedSemester === semester.id
-                        ? "btn-secondary shadow text-white"
-                        : "btn-outline-secondary"
-                    }`}
-                    onClick={() => setSelectedSemester(semester.id)}
-                  >
-                    {semester.name}
-                  </button>
-                ))}
+            {/* Collapsible Panel for Branch & Semester Selection */}
+            {showFilters && (
+              <div className="collapsible-filter-panel mt-3 pt-3 border-top">
+                <div className="mb-3">
+                  <label className="fw-semibold small text-muted d-block mb-2">Branch:</label>
+                  <div className="d-flex flex-wrap gap-2">
+                    {branches.map((b) => (
+                      <button
+                        key={b.id}
+                        className={`btn btn-sm rounded-3 px-3 py-2 border transition-all ${
+                          selectedBranch === b.id ? "btn-primary shadow-sm" : "btn-outline-secondary"
+                        }`}
+                        onClick={() => setSelectedBranch(b.id)}
+                      >
+                        <span>{b.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="fw-semibold small text-muted d-block mb-2">Semester:</label>
+                  <div className="d-flex flex-wrap gap-2">
+                    {semesters.map((s) => (
+                      <button
+                        key={s.id}
+                        className={`btn btn-sm rounded-3 px-3 py-2 border transition-all ${
+                          selectedSemester === s.id ? "btn-primary shadow-sm" : "btn-outline-secondary"
+                        }`}
+                        onClick={() => setSelectedSemester(s.id)}
+                      >
+                        {s.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Materials Grid/List */}
-      <section className="materials-section py-5">
+      {/* Materials List / Grid Display */}
+      <section className="py-2">
         <div className="container">
           {isLoading ? (
             <div className="text-center py-5">
-              <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}></div>
-              <p className="mt-3 text-muted">Loading study materials...</p>
+              <div className="spinner-border text-primary" role="status"></div>
+              <p className="mt-2 text-muted">Searching materials...</p>
             </div>
           ) : (
             <>
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <h3 className="fw-bold m-0">
-                  {selectedBranch === "all"
-                    ? "All Materials"
-                    : branches.find((b) => b.id === selectedBranch)?.name}
-                  {selectedSemester !== "all" &&
-                    ` - ${
-                      semesters.find((s) => s.id === selectedSemester)?.name
-                    }`}
-                </h3>
-                <span className="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill fs-6">
-                  {filteredMaterials.length} material{filteredMaterials.length !== 1 ? "s" : ""} found
-                </span>
-              </div>
-
               <div className={viewMode === "grid" ? "row g-4" : "d-flex flex-column gap-3"}>
                 {filteredMaterials.map((material) => {
                   const isBookmarked = bookmarks.includes(material.id);
@@ -498,18 +454,18 @@ const Materials = () => {
                       key={material.id}
                       className={viewMode === "grid" ? "col-md-6 col-lg-4" : "col-12"}
                     >
-                      <div className="card h-100 border-0 shadow-sm rounded-4 p-3 transition-all hover-lift bg-body-tertiary">
+                      <div className="card h-100 border shadow-sm rounded-4 p-3 hover-lift bg-body-tertiary d-flex flex-column">
                         <div className="d-flex justify-content-between align-items-center mb-2">
-                          <span className="badge bg-primary-subtle text-primary rounded-pill px-3 py-2">
-                            {getTypeIcon(material.type)} {material.type.toUpperCase()}
+                          <span className="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 small fw-semibold">
+                            {material.type.toUpperCase()}
                           </span>
-                          <span className="fw-semibold text-warning small">
-                            ⭐ {material.rating}
+                          <span className="fw-semibold text-warning small d-flex align-items-center gap-1">
+                            <FiStar size={14} className="fill-warning" /> {material.rating}
                           </span>
                         </div>
 
-                        <div className="card-body p-0 py-2">
-                          <h5 className="card-title fw-bold">{material.title}</h5>
+                        <div className="card-body p-0 py-2 flex-grow-1">
+                          <h5 className="card-title fw-bold m-0 mb-2">{material.title}</h5>
                           <div className="d-flex flex-wrap gap-2 mb-2">
                             <span className="badge bg-info-subtle text-info small">
                               {material.subject}
@@ -518,13 +474,18 @@ const Materials = () => {
                               Sem {material.semester}
                             </span>
                             <span
-                              className="badge text-white small"
-                              style={{ backgroundColor: getDifficultyColor(material.difficulty) }}
+                              className={`badge small ${
+                                material.difficulty === "Beginner"
+                                  ? "bg-success-subtle text-success"
+                                  : material.difficulty === "Intermediate"
+                                  ? "bg-warning-subtle text-warning-emphasis"
+                                  : "bg-danger-subtle text-danger"
+                              }`}
                             >
                               {material.difficulty}
                             </span>
                           </div>
-                          <p className="card-text text-muted small line-clamp-2">
+                          <p className="card-text text-muted small line-clamp-2 mb-3">
                             {material.description}
                           </p>
 
@@ -536,39 +497,42 @@ const Materials = () => {
                             ))}
                           </div>
 
-                          <div className="text-secondary small d-flex justify-content-between align-items-center pt-2 border-top">
-                            <span>✍️ {material.author}</span>
-                            <span>📥 {material.downloads.toLocaleString()} downloads</span>
+                          <div className="text-muted small d-flex justify-content-between align-items-center pt-2 border-top">
+                            <span className="d-flex align-items-center gap-1">
+                              <FiUser size={13} /> {material.author}
+                            </span>
+                            <span>{material.downloads.toLocaleString()} downloads</span>
                           </div>
                         </div>
 
-                        <div className="card-footer bg-transparent border-0 p-0 pt-3 d-flex gap-2">
+                        <div className="card-footer bg-transparent border-0 p-0 pt-3 d-flex gap-2 flex-wrap">
                           <button
-                            className="btn btn-primary btn-sm flex-grow-1 rounded-3 fw-semibold"
-                            onClick={() => handleDownload(material.id, material.title)}
+                            className="btn btn-primary btn-sm flex-grow-1 rounded-3 fw-semibold d-flex align-items-center justify-content-center gap-2"
+                            onClick={() => setSelectedPdfModal({ title: material.title, url: material.pdfUrl, size: material.size })}
                           >
-                            📥 Download ({material.size})
+                            <FiFileText size={15} /> <span>Read PDF</span>
                           </button>
                           <button
-                            className="btn btn-outline-info btn-sm rounded-3"
-                            onClick={() => setSelectedPreview(material)}
-                            title="Preview details"
+                            className="btn btn-outline-secondary btn-sm rounded-3 d-flex align-items-center gap-1"
+                            onClick={() => handleDownload(material.title, material.pdfUrl)}
+                            title="Download PDF"
                           >
-                            👁️ Preview
+                            <FiDownload size={14} />
+                            <span className="small">({material.size})</span>
                           </button>
                           <button
-                            className={`btn btn-sm rounded-3 ${isBookmarked ? "btn-warning" : "btn-outline-warning"}`}
+                            className={`btn btn-sm rounded-3 ${isBookmarked ? "btn-warning" : "btn-outline-secondary"}`}
                             onClick={() => toggleBookmark(material.id)}
                             title="Bookmark"
                           >
-                            {isBookmarked ? "★" : "☆"}
+                            <FiBookmark size={15} />
                           </button>
                           <button
                             className="btn btn-outline-secondary btn-sm rounded-3"
                             onClick={() => handleShare(material.title)}
-                            title="Share"
+                            title="Share Link"
                           >
-                            🔗
+                            <FiShare2 size={15} />
                           </button>
                         </div>
                       </div>
@@ -578,12 +542,12 @@ const Materials = () => {
               </div>
 
               {filteredMaterials.length === 0 && (
-                <div className="text-center py-5 my-5 bg-body-tertiary rounded-4">
-                  <div className="fs-1 mb-3">📚</div>
-                  <h4>No materials found</h4>
+                <div className="text-center py-5 my-4 bg-body-tertiary rounded-4 border">
+                  <FiBookOpen size={40} className="text-muted mb-3" />
+                  <h4>No Materials Found</h4>
                   <p className="text-muted">Try adjusting your search query or branch/semester filters.</p>
                   <button
-                    className="btn btn-outline-primary rounded-pill px-4"
+                    className="btn btn-outline-primary rounded-3 px-4"
                     onClick={() => {
                       setSearchTerm("");
                       setSelectedBranch("all");
@@ -599,83 +563,14 @@ const Materials = () => {
         </div>
       </section>
 
-      {/* Preview Modal */}
-      {selectedPreview && (
-        <div
-          className="modal fade show d-block"
-          style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
-          tabIndex="-1"
-        >
-          <div className="modal-dialog modal-dialog-centered modal-lg">
-            <div className="modal-content rounded-4 shadow-lg border-0">
-              <div className="modal-header border-bottom">
-                <h5 className="modal-header-title fw-bold m-0 d-flex align-items-center gap-2">
-                  <span>{getTypeIcon(selectedPreview.type)}</span> {selectedPreview.title}
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setSelectedPreview(null)}
-                ></button>
-              </div>
-              <div className="modal-body p-4">
-                <div className="row g-3 mb-3">
-                  <div className="col-md-6">
-                    <p className="m-0 text-muted small">Subject</p>
-                    <p className="fw-semibold">{selectedPreview.subject}</p>
-                  </div>
-                  <div className="col-md-6">
-                    <p className="m-0 text-muted small">Author & Instructor</p>
-                    <p className="fw-semibold">{selectedPreview.author}</p>
-                  </div>
-                  <div className="col-md-6">
-                    <p className="m-0 text-muted small">Format & Size</p>
-                    <p className="fw-semibold">{selectedPreview.format} • {selectedPreview.size}</p>
-                  </div>
-                  <div className="col-md-6">
-                    <p className="m-0 text-muted small">Pages / Duration</p>
-                    <p className="fw-semibold">{selectedPreview.pages ? `${selectedPreview.pages} Pages` : selectedPreview.duration || "N/A"}</p>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <h6 className="fw-bold mb-2">Description</h6>
-                  <p className="text-secondary">{selectedPreview.description}</p>
-                </div>
-
-                <div>
-                  <h6 className="fw-bold mb-2">Topics Covered</h6>
-                  <div className="d-flex flex-wrap gap-2">
-                    {selectedPreview.topics.map((t, idx) => (
-                      <span key={idx} className="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer border-top">
-                <button
-                  type="button"
-                  className="btn btn-secondary rounded-3"
-                  onClick={() => setSelectedPreview(null)}
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary rounded-3 fw-semibold"
-                  onClick={() => {
-                    handleDownload(selectedPreview.id, selectedPreview.title);
-                    setSelectedPreview(null);
-                  }}
-                >
-                  Download File Now 📥
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Online Free PDF Viewer Modal */}
+      {selectedPdfModal && (
+        <PdfViewerModal
+          title={selectedPdfModal.title}
+          pdfUrl={selectedPdfModal.url}
+          downloadSize={selectedPdfModal.size}
+          onClose={() => setSelectedPdfModal(null)}
+        />
       )}
     </div>
   );

@@ -1,35 +1,61 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./Placement.css";
+import PdfViewerModal from "./PdfViewerModal";
+import { FaBuilding } from "react-icons/fa6";
+import {
+  FiBriefcase,
+  FiBookOpen,
+  FiTarget,
+  FiAward,
+  FiSearch,
+  FiMapPin,
+  FiDollarSign,
+  FiStar,
+  FiCheck,
+  FiFileText,
+  FiDownload,
+  FiUserCheck,
+  FiArrowRight,
+  FiClock,
+  FiUsers,
+  FiX,
+  FiSliders,
+  FiChevronDown,
+  FiChevronUp,
+  FiRotateCcw,
+} from "react-icons/fi";
 
 const Placement = () => {
   const [activeTab, setActiveTab] = useState("opportunities");
   const [selectedCompany, setSelectedCompany] = useState("all");
   const [selectedRole, setSelectedRole] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [selectedPdf, setSelectedPdf] = useState(null);
 
   const tabs = [
-    { id: "opportunities", name: "Job Opportunities", icon: "💼" },
-    { id: "companies", name: "Companies", icon: "🏢" },
-    { id: "preparation", name: "Preparation", icon: "📚" },
-    { id: "interviews", name: "Interview Tips", icon: "🎯" },
-    { id: "success", name: "Success Stories", icon: "🏆" },
+    { id: "opportunities", name: "Job Opportunities", icon: <FiBriefcase size={16} /> },
+    { id: "companies", name: "Companies", icon: <FaBuilding size={16} /> },
+    { id: "preparation", name: "Preparation", icon: <FiBookOpen size={16} /> },
+    { id: "interviews", name: "Interview Tips", icon: <FiTarget size={16} /> },
+    { id: "success", name: "Success Stories", icon: <FiAward size={16} /> },
   ];
 
   const companies = useMemo(
     () => [
-      { id: "all", name: "All Companies", logo: "🌟" },
-      { id: "google", name: "Google", logo: "🔍", tier: "tier1" },
-      { id: "microsoft", name: "Microsoft", logo: "💻", tier: "tier1" },
-      { id: "amazon", name: "Amazon", logo: "📦", tier: "tier1" },
-      { id: "apple", name: "Apple", logo: "🍎", tier: "tier1" },
-      { id: "meta", name: "Meta", logo: "📘", tier: "tier1" },
-      { id: "netflix", name: "Netflix", logo: "🎬", tier: "tier1" },
-      { id: "tesla", name: "Tesla", logo: "⚡", tier: "tier2" },
-      { id: "uber", name: "Uber", logo: "🚗", tier: "tier2" },
+      { id: "all", name: "All Companies", tier: "All", description: "Filter across all technology hiring partners." },
+      { id: "google", name: "Google", tier: "Tier 1", openRoles: 14, techStack: ["Java", "Python", "Go", "Distributed Systems"], description: "Global technology leader in search, cloud computing, and AI research." },
+      { id: "microsoft", name: "Microsoft", tier: "Tier 1", openRoles: 18, techStack: ["C#", "Azure", "React", "TypeScript"], description: "Pioneer in cloud infrastructure, operating systems, and enterprise software." },
+      { id: "amazon", name: "Amazon", tier: "Tier 1", openRoles: 25, techStack: ["Java", "AWS", "DynamoDB", "Microservices"], description: "World's largest e-commerce platform and cloud service provider." },
+      { id: "apple", name: "Apple", tier: "Tier 1", openRoles: 9, techStack: ["Swift", "Objective-C", "iOS", "C++"], description: "Consumer electronics, hardware, and mobile operating system innovator." },
+      { id: "meta", name: "Meta", tier: "Tier 1", openRoles: 12, techStack: ["React", "GraphQL", "Python", "PyTorch"], description: "Connecting billions through social media networks and metaverse technology." },
+      { id: "netflix", name: "Netflix", tier: "Tier 1", openRoles: 7, techStack: ["Java", "Node.js", "Spring Boot", "Cassandra"], description: "Streaming giant delivering entertainment content globally at hyper-scale." },
+      { id: "tesla", name: "Tesla", tier: "Tier 2", openRoles: 11, techStack: ["Python", "C++", "PyTorch", "Embedded C"], description: "Electric vehicle and renewable energy automation pioneer." },
+      { id: "uber", name: "Uber", tier: "Tier 2", openRoles: 15, techStack: ["Go", "Java", "React Native", "Kafka"], description: "Ridesharing, logistics, and real-time geospatial computing platform." },
     ],
     []
   );
@@ -261,6 +287,46 @@ const Placement = () => {
           "Team Match",
         ],
       },
+      {
+        id: 7,
+        title: "Autonomous Systems Software Engineer",
+        company: "tesla",
+        location: "Bangalore, India",
+        type: "Full-time",
+        experience: "1-4 years",
+        salary: "₹30-48 LPA",
+        skills: ["C++", "Python", "Computer Vision", "ROS"],
+        description: "Develop cutting-edge real-time control software for autonomous vehicle systems.",
+        requirements: ["Strong C++", "Robotics/CV experience", "Embedded Linux"],
+        benefits: ["Tesla Equity", "Relocation Support", "Health Plan"],
+        postedDate: "2024-02-01",
+        deadline: "2024-03-01",
+        applicants: 512,
+        status: "open",
+        difficulty: "High",
+        rating: 4.9,
+        interviewProcess: ["Algo Challenge", "C++ Deep Dive", "Architecture", "VP Round"],
+      },
+      {
+        id: 8,
+        title: "Backend Distributed Systems Engineer",
+        company: "uber",
+        location: "Hyderabad, India",
+        type: "Full-time",
+        experience: "2-4 years",
+        salary: "₹28-42 LPA",
+        skills: ["Go", "Java", "Microservices", "Kafka"],
+        description: "Architect high-throughput real-time matching engines powering Uber global dispatch.",
+        requirements: ["Distributed Systems", "Concurrency in Go/Java", "High Availability"],
+        benefits: ["Uber Credits", "Comprehensive Healthcare", "Stock Grants"],
+        postedDate: "2024-02-03",
+        deadline: "2024-03-05",
+        applicants: 780,
+        status: "open",
+        difficulty: "High",
+        rating: 4.8,
+        interviewProcess: ["Screening", "System Design", "Coding Round 1", "Coding Round 2"],
+      }
     ],
     []
   );
@@ -268,75 +334,139 @@ const Placement = () => {
   const preparationResources = [
     {
       id: 1,
-      title: "Data Structures & Algorithms Mastery",
-      type: "Course",
+      title: "Data Structures & Algorithms Mastery Handbook",
+      type: "PDF Guide",
       duration: "12 weeks",
       difficulty: "Advanced",
       rating: 4.9,
       students: 15420,
+      pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
+      downloadSize: "4.8 MB",
       description:
-        "Complete DSA preparation covering all major topics with 500+ problems",
+        "Complete DSA preparation covering arrays, trees, dynamic programming, and top 500 interview problems with solutions.",
       topics: [
-        "Arrays",
+        "Arrays & Strings",
         "Linked Lists",
-        "Trees",
-        "Graphs",
+        "Trees & Graphs",
         "Dynamic Programming",
+        "Bit Manipulation",
       ],
     },
     {
       id: 2,
-      title: "System Design Interview Prep",
-      type: "Workshop",
+      title: "System Design Interview Cheat Sheet",
+      type: "PDF Blueprint",
       duration: "8 weeks",
       difficulty: "Expert",
       rating: 4.8,
       students: 8760,
+      pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      downloadSize: "3.2 MB",
       description:
-        "Learn to design scalable systems like the ones used by tech giants",
+        "Architectural patterns, load balancing, sharding, caching strategies, and real-world system design interview blueprints.",
       topics: [
         "Scalability",
         "Load Balancing",
-        "Databases",
-        "Caching",
+        "NoSQL vs SQL",
+        "Caching & Redis",
         "Microservices",
       ],
     },
     {
       id: 3,
-      title: "Mock Interview Sessions",
-      type: "Practice",
-      duration: "Ongoing",
-      difficulty: "All Levels",
+      title: "Tech Resume & Portfolio Template Kit",
+      type: "Template Guide",
+      duration: "2 weeks",
+      difficulty: "Beginner",
       rating: 4.7,
       students: 12300,
+      pdfUrl: "https://raw.githubusercontent.com/pdfobject/pdfobject.github.io/master/sample-3d.pdf",
+      downloadSize: "2.1 MB",
       description:
-        "Practice with experienced interviewers from top tech companies",
+        "ATS-friendly resume templates, high-impact bullet point formulas, and GitHub portfolio optimization guides.",
       topics: [
-        "Technical Questions",
-        "Behavioral",
-        "Problem Solving",
-        "Communication",
+        "ATS Resume Format",
+        "Action Verbs",
+        "Project Spotlights",
+        "Skills Matrix",
+        "GitHub Layout",
       ],
     },
     {
       id: 4,
-      title: "Resume Building Workshop",
-      type: "Workshop",
-      duration: "2 weeks",
-      difficulty: "Beginner",
-      rating: 4.6,
-      students: 9850,
+      title: "Top 100 Technical Coding Interview Questions",
+      type: "Question Bank",
+      duration: "4 weeks",
+      difficulty: "Intermediate",
+      rating: 4.9,
+      students: 18900,
+      pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
+      downloadSize: "5.5 MB",
       description:
-        "Create an ATS-friendly resume that gets you noticed by recruiters",
+        "Curated collection of the most frequently asked coding problems across FAANG and top tech startups.",
       topics: [
-        "Resume Format",
-        "Keywords",
-        "Projects",
-        "Skills",
-        "ATS Optimization",
+        "Two Pointers",
+        "Sliding Window",
+        "Binary Search",
+        "Backtracking",
+        "Greedy Algorithms",
       ],
     },
+  ];
+
+  const interviewTips = [
+    {
+      id: 1,
+      category: "Coding & Problem Solving",
+      title: "How to Approach Live Coding Assessments",
+      summary: "Master the 5-step problem solving framework used by top software engineers.",
+      pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
+      tips: [
+        "Always clarify input constraints and edge cases before writing code.",
+        "Talk through your thought process out loud to show problem-solving logic.",
+        "Propose a naive brute force solution first, then optimize time/space complexity.",
+        "Dry run your code with sample inputs and edge cases before running tests.",
+      ]
+    },
+    {
+      id: 2,
+      category: "System Design",
+      title: "System Design Interview Strategy",
+      summary: "Framework for designing scalable distributed systems in 45 minutes.",
+      pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      tips: [
+        "Spend the first 5-10 minutes gathering functional and non-functional requirements.",
+        "Calculate estimated Traffic (QPS), Storage, and Bandwidth capacity requirements.",
+        "Draw high-level components: Client, API Gateway, Services, DB, and Cache.",
+        "Deep dive into bottlenecks: Single points of failure, replication, and data partitioning.",
+      ]
+    },
+    {
+      id: 3,
+      category: "Behavioral & HR",
+      title: "Mastering the STAR Behavioral Framework",
+      summary: "Structure your project and leadership stories effectively.",
+      pdfUrl: "https://raw.githubusercontent.com/pdfobject/pdfobject.github.io/master/sample-3d.pdf",
+      tips: [
+        "Situation: Set the context and background of your project or challenge.",
+        "Task: Clearly state your specific responsibility and goal.",
+        "Action: Detail the exact technical or strategic steps YOU took.",
+        "Result: Highlight measurable outcomes (e.g. 'Reduced latency by 40%').",
+      ]
+    },
+    {
+      id: 4,
+      category: "Offer Negotiation",
+      title: "Salary Negotiation & Offer Evaluation",
+      summary: "How to negotiate base salary, stock options, and signing bonuses professionally.",
+      pdfUrl: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf",
+      tips: [
+        "Never reveal exact salary expectations in early HR calls; ask for the pay range.",
+        "Benchmark compensation data using industry tools like Levels.fyi.",
+        "Highlight competing offers and specialized skills to justify higher tiers.",
+        "Negotiate signing bonuses and equity grants if base salary is capped.",
+      ]
+    }
   ];
 
   const successStories = [
@@ -347,7 +477,6 @@ const Placement = () => {
       role: "SDE-2",
       package: "₹45 LPA",
       batch: "2023",
-      image: "👨‍💻",
       story:
         "Started with basic programming knowledge and landed at Google through consistent practice and mentorship.",
       tips: [
@@ -364,7 +493,6 @@ const Placement = () => {
       role: "Frontend Engineer",
       package: "₹38 LPA",
       batch: "2023",
-      image: "👩‍💻",
       story:
         "Specialized in frontend development and built impressive React projects that caught Microsoft's attention.",
       tips: [
@@ -381,7 +509,6 @@ const Placement = () => {
       role: "Data Scientist",
       package: "₹42 LPA",
       batch: "2022",
-      image: "👨‍🔬",
       story:
         "Transitioned from mechanical engineering to data science through online courses and practical projects.",
       tips: [
@@ -422,7 +549,7 @@ const Placement = () => {
         setFilteredJobs(filtered);
       }
       setIsLoading(false);
-    }, 500);
+    }, 300);
   }, [
     activeTab,
     selectedCompany,
@@ -433,22 +560,7 @@ const Placement = () => {
     roles,
   ]);
 
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty) {
-      case "Low":
-      case "Beginner":
-        return "#28a745";
-      case "Medium":
-      case "Intermediate":
-        return "#ffc107";
-      case "High":
-      case "Advanced":
-      case "Expert":
-        return "#dc3545";
-      default:
-        return "#6c757d";
-    }
-  };
+
 
   const getCompanyInfo = (companyId) => {
     return companies.find((c) => c.id === companyId) || companies[0];
@@ -460,68 +572,38 @@ const Placement = () => {
   };
 
   return (
-    <div className="placement-container">
-      {/* Hero Section */}
-      <section className="placement-hero">
-        <div className="hero-background">
-          <div className="floating-elements">
-            <div className="float-element">💼</div>
-            <div className="float-element">🚀</div>
-            <div className="float-element">🎯</div>
-            <div className="float-element">🏆</div>
-            <div className="float-element">💡</div>
-            <div className="float-element">⭐</div>
-          </div>
-        </div>
+    <div className="placement-container pb-5">
+      {/* Header Section */}
+      <section className="py-4 mb-4 bg-body-tertiary border-bottom">
         <div className="container">
-          <div className="hero-content">
-            <h1 className="hero-title">
-              Launch Your <span className="gradient-text">Career</span>
-            </h1>
-            <p className="hero-description">
-              Discover amazing job opportunities, prepare for interviews, and
-              connect with top companies to kickstart your dream career in
-              technology
-            </p>
-            <div className="hero-stats">
-              <div className="stat-card">
-                <div className="stat-icon">💼</div>
-                <div className="stat-info">
-                  <span className="stat-number">500+</span>
-                  <span className="stat-label">Job Openings</span>
-                </div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-icon">🏢</div>
-                <div className="stat-info">
-                  <span className="stat-number">50+</span>
-                  <span className="stat-label">Top Companies</span>
-                </div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-icon">🎯</div>
-                <div className="stat-info">
-                  <span className="stat-number">95%</span>
-                  <span className="stat-label">Success Rate</span>
-                </div>
-              </div>
+          <h1 className="display-6 fw-bold mb-2 text-body d-flex align-items-center gap-3">
+            <div className="p-2 bg-danger-subtle text-danger rounded-3 d-inline-flex">
+              <FiTarget size={28} />
             </div>
-          </div>
+            <span>Career & Placement Preparation</span>
+          </h1>
+          <p className="lead text-muted m-0 fs-6" style={{ maxWidth: "720px" }}>
+            Discover top tier engineering opportunities, master technical interviews with free PDF cheat sheets, and prepare for software roles.
+          </p>
         </div>
       </section>
 
       {/* Navigation Tabs */}
-      <section className="tabs-section">
+      <section className="mb-4">
         <div className="container">
-          <div className="tabs-wrapper">
+          <div className="d-flex flex-wrap gap-2 justify-content-start bg-body-tertiary p-2 rounded-4 shadow-sm border">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
+                className={`btn rounded-3 px-3 py-2 fw-medium d-flex align-items-center gap-2 transition-all ${
+                  activeTab === tab.id
+                    ? "btn-primary shadow-sm fw-semibold"
+                    : "btn-outline-secondary border-0"
+                }`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                <span className="tab-icon">{tab.icon}</span>
-                <span className="tab-name">{tab.name}</span>
+                <span>{tab.icon}</span>
+                <span>{tab.name}</span>
               </button>
             ))}
           </div>
@@ -534,147 +616,162 @@ const Placement = () => {
           {/* Job Opportunities Tab */}
           {activeTab === "opportunities" && (
             <div className="opportunities-content">
-              <div className="filters-section">
-                <div className="search-box">
-                  <div className="search-icon">🔍</div>
-                  <input
-                    type="text"
-                    placeholder="Search jobs, companies, or skills..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="search-input"
-                  />
-                  {searchTerm && (
+              <div className="bg-body-tertiary p-3 p-md-4 rounded-4 shadow-sm border mb-4">
+                <div className="row g-3 align-items-center">
+                  <div className="col-md-6">
+                    <div className="input-group shadow-sm rounded-3 overflow-hidden border">
+                      <span className="input-group-text bg-body border-end-0 text-muted">
+                        <FiSearch size={18} />
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Search jobs, companies, or required tech skills..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="form-control border-start-0 bg-body shadow-none"
+                      />
+                      {searchTerm && (
+                        <button
+                          className="btn btn-outline-secondary border-start-0 bg-body text-muted"
+                          onClick={() => setSearchTerm("")}
+                        >
+                          <FiX size={16} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-md-6 d-flex align-items-center justify-content-md-end gap-2">
                     <button
-                      className="clear-search"
-                      onClick={() => setSearchTerm("")}
+                      className={`btn btn-filter-toggle d-flex align-items-center gap-2 ${
+                        showFilters || (selectedCompany !== "all" || selectedRole !== "all") ? "active" : ""
+                      }`}
+                      onClick={() => setShowFilters(!showFilters)}
                     >
-                      ✕
+                      <FiSliders size={16} />
+                      <span>Filter Options</span>
+                      {((selectedCompany !== "all" ? 1 : 0) + (selectedRole !== "all" ? 1 : 0)) > 0 && (
+                        <span className="badge bg-primary text-white rounded-pill ms-1 px-2">
+                          {(selectedCompany !== "all" ? 1 : 0) + (selectedRole !== "all" ? 1 : 0)}
+                        </span>
+                      )}
+                      {showFilters ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
                     </button>
-                  )}
-                </div>
 
-                <div className="filter-controls">
-                  <div className="filter-group">
-                    <label className="filter-label">Company</label>
-                    <div className="company-filters">
-                      {companies.slice(0, 6).map((company) => (
-                        <button
-                          key={company.id}
-                          className={`company-btn ${
-                            selectedCompany === company.id ? "active" : ""
-                          }`}
-                          onClick={() => setSelectedCompany(company.id)}
-                        >
-                          <span className="company-logo">{company.logo}</span>
-                          <span className="company-name">{company.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="filter-group">
-                    <label className="filter-label">Role</label>
-                    <div className="role-filters">
-                      {roles.slice(0, 6).map((role) => (
-                        <button
-                          key={role.id}
-                          className={`role-btn ${
-                            selectedRole === role.id ? "active" : ""
-                          }`}
-                          onClick={() => setSelectedRole(role.id)}
-                        >
-                          {role.name}
-                        </button>
-                      ))}
-                    </div>
+                    {(selectedCompany !== "all" || selectedRole !== "all") && (
+                      <button
+                        className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                        onClick={() => {
+                          setSelectedCompany("all");
+                          setSelectedRole("all");
+                        }}
+                        title="Reset Filters"
+                      >
+                        <FiRotateCcw size={14} />
+                        <span>Reset</span>
+                      </button>
+                    )}
                   </div>
                 </div>
+
+                {showFilters && (
+                  <div className="collapsible-filter-panel mt-3 pt-3 border-top">
+                    <div className="mb-3">
+                      <label className="fw-semibold small text-muted d-block mb-2">Company Filters:</label>
+                      <div className="d-flex flex-wrap gap-2">
+                        {companies.map((company) => (
+                          <button
+                            key={company.id}
+                            className={`btn btn-sm rounded-3 px-3 py-2 border transition-all ${
+                              selectedCompany === company.id ? "btn-primary shadow-sm" : "btn-outline-secondary"
+                            }`}
+                            onClick={() => setSelectedCompany(company.id)}
+                          >
+                            <span>{company.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="fw-semibold small text-muted d-block mb-2">Role Filters:</label>
+                      <div className="d-flex flex-wrap gap-2">
+                        {roles.map((role) => (
+                          <button
+                            key={role.id}
+                            className={`btn btn-sm rounded-3 px-3 py-2 border transition-all ${
+                              selectedRole === role.id ? "btn-primary shadow-sm" : "btn-outline-secondary"
+                            }`}
+                            onClick={() => setSelectedRole(role.id)}
+                          >
+                            {role.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {isLoading ? (
-                <div className="loading-container">
-                  <div className="loading-spinner"></div>
-                  <p>Loading job opportunities...</p>
+                <div className="text-center py-5">
+                  <div className="spinner-border text-primary" role="status"></div>
+                  <p className="mt-2 text-muted">Loading job opportunities...</p>
                 </div>
               ) : (
-                <div className="jobs-grid">
-                  {filteredJobs.map((job, index) => (
-                    <div
-                      key={job.id}
-                      className="job-card"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                      onClick={() => openJobModal(job)}
-                    >
-                      <div className="job-header">
-                        <div className="job-company">
-                          <span className="company-logo">
-                            {getCompanyInfo(job.company).logo}
-                          </span>
-                          <div className="company-info">
-                            <h3 className="job-title">{job.title}</h3>
-                            <p className="company-name">
-                              {getCompanyInfo(job.company).name}
-                            </p>
+                <div className="row g-4">
+                  {filteredJobs.map((job) => (
+                    <div key={job.id} className="col-md-6 col-lg-4">
+                      <div
+                        className="card h-100 border shadow-sm rounded-4 p-3 hover-lift bg-body-tertiary cursor-pointer d-flex flex-column"
+                        onClick={() => openJobModal(job)}
+                      >
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                          <div className="d-flex align-items-center gap-2">
+                            <div className="p-2 bg-body border rounded-3 d-flex align-items-center justify-content-center">
+                              <FaBuilding size={20} className="text-primary" />
+                            </div>
+                            <div>
+                              <h5 className="card-title fw-bold m-0 text-truncate">{job.title}</h5>
+                              <span className="text-muted small">{getCompanyInfo(job.company).name}</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="job-meta">
-                          <span className="job-type">{job.type}</span>
                           <span
-                            className="difficulty-badge"
-                            style={{
-                              backgroundColor: getDifficultyColor(
-                                job.difficulty
-                              ),
-                            }}
+                            className={`badge small px-2 py-1 rounded-pill ${
+                              job.difficulty === "Low" || job.difficulty === "Beginner"
+                                ? "bg-success-subtle text-success"
+                                : job.difficulty === "Medium" || job.difficulty === "Intermediate"
+                                ? "bg-warning-subtle text-warning-emphasis"
+                                : "bg-danger-subtle text-danger"
+                            }`}
                           >
                             {job.difficulty}
                           </span>
                         </div>
-                      </div>
 
-                      <div className="job-details">
-                        <div className="job-info">
-                          <div className="info-item">
-                            <i className="fas fa-map-marker-alt"></i>
-                            <span>{job.location}</span>
-                          </div>
-                          <div className="info-item">
-                            <i className="fas fa-clock"></i>
-                            <span>{job.experience}</span>
-                          </div>
-                          <div className="info-item">
-                            <i className="fas fa-money-bill"></i>
-                            <span>{job.salary}</span>
-                          </div>
-                          <div className="info-item">
-                            <i className="fas fa-users"></i>
-                            <span>{job.applicants} applicants</span>
-                          </div>
-                        </div>
+                        <p className="card-text text-muted small line-clamp-2 mb-3 flex-grow-1">
+                          {job.description}
+                        </p>
 
-                        <p className="job-description">{job.description}</p>
-
-                        <div className="job-skills">
+                        <div className="d-flex flex-wrap gap-1 mb-3">
                           {job.skills.map((skill, idx) => (
-                            <span key={idx} className="skill-tag">
+                            <span key={idx} className="badge bg-body border text-body-tertiary small fw-normal">
                               {skill}
                             </span>
                           ))}
                         </div>
-                      </div>
 
-                      <div className="job-footer">
-                        <div className="job-stats">
-                          <span className="rating">⭐ {job.rating}</span>
-                          <span className="deadline">
-                            Deadline:{" "}
-                            {new Date(job.deadline).toLocaleDateString()}
+                        <div className="d-flex justify-content-between align-items-center text-muted small pt-2 border-top mb-3">
+                          <span className="d-flex align-items-center gap-1">
+                            <FiMapPin size={13} /> {job.location}
+                          </span>
+                          <span className="fw-bold text-success d-flex align-items-center gap-1">
+                            <FiDollarSign size={13} /> {job.salary}
                           </span>
                         </div>
-                        <button className="apply-btn">
-                          Apply Now
-                          <i className="fas fa-arrow-right"></i>
+
+                        <button className="btn btn-primary w-100 rounded-3 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                          <span>View Details & Apply</span> <FiArrowRight size={15} />
                         </button>
                       </div>
                     </div>
@@ -684,86 +781,198 @@ const Placement = () => {
             </div>
           )}
 
-          {/* Other tabs content will be rendered here */}
-          {activeTab === "preparation" && (
-            <div className="preparation-content">
-              <div className="section-header">
-                <h2>Interview Preparation Resources</h2>
-                <p>Master the skills needed to ace your technical interviews</p>
+          {/* Companies Tab Screen */}
+          {activeTab === "companies" && (
+            <div className="companies-content">
+              <div className="mb-4">
+                <h3 className="fw-bold m-0">Participating Hiring Partners</h3>
+                <p className="text-muted small m-0">Top engineering companies hiring directly through StudiMI</p>
               </div>
-              <div className="resources-grid">
-                {preparationResources.map((resource, index) => (
-                  <div
-                    key={resource.id}
-                    className="resource-card"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="resource-header">
-                      <h3>{resource.title}</h3>
-                      <span className="resource-type">{resource.type}</span>
-                    </div>
-                    <p className="resource-description">
-                      {resource.description}
-                    </p>
-                    <div className="resource-meta">
-                      <div className="meta-item">
-                        <i className="fas fa-clock"></i>
-                        <span>{resource.duration}</span>
-                      </div>
-                      <div className="meta-item">
-                        <i className="fas fa-star"></i>
-                        <span>{resource.rating}</span>
-                      </div>
-                      <div className="meta-item">
-                        <i className="fas fa-users"></i>
-                        <span>{resource.students.toLocaleString()}</span>
-                      </div>
-                    </div>
-                    <div className="resource-topics">
-                      {resource.topics.map((topic, idx) => (
-                        <span key={idx} className="topic-tag">
-                          {topic}
+
+              <div className="row g-4">
+                {companies.filter(c => c.id !== 'all').map((company) => (
+                  <div key={company.id} className="col-md-6 col-lg-4">
+                    <div className="card h-100 border shadow-sm rounded-4 p-4 hover-lift bg-body-tertiary d-flex flex-column">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <div className="p-3 bg-primary-subtle text-primary rounded-3 d-inline-flex">
+                          <FaBuilding size={24} />
+                        </div>
+                        <span className="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 small fw-semibold">
+                          {company.tier}
                         </span>
-                      ))}
+                      </div>
+                      <h4 className="fw-bold mb-2">{company.name}</h4>
+                      <p className="text-muted small flex-grow-1">{company.description}</p>
+
+                      <div className="mb-3">
+                        <span className="fw-semibold small text-secondary d-block mb-1">Core Tech Stack:</span>
+                        <div className="d-flex flex-wrap gap-1">
+                          {company.techStack?.map((tech, i) => (
+                            <span key={i} className="badge bg-body border text-body-secondary small fw-normal">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                        <span className="badge bg-success-subtle text-success">{company.openRoles} Open Positions</span>
+                        <button
+                          className="btn btn-outline-primary btn-sm rounded-3 fw-semibold d-flex align-items-center gap-1"
+                          onClick={() => {
+                            setSelectedCompany(company.id);
+                            setActiveTab("opportunities");
+                          }}
+                        >
+                          <span>View Jobs</span> <FiArrowRight size={14} />
+                        </button>
+                      </div>
                     </div>
-                    <button className="resource-btn">Start Learning</button>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {activeTab === "success" && (
-            <div className="success-content">
-              <div className="section-header">
-                <h2>Success Stories</h2>
-                <p>Get inspired by our students who landed their dream jobs</p>
+          {/* Preparation Tab */}
+          {activeTab === "preparation" && (
+            <div className="preparation-content">
+              <div className="mb-4">
+                <h3 className="fw-bold m-0">Interview Preparation Resources & PDFs</h3>
+                <p className="text-muted small m-0">Master DSA, System Design, and ATS resume standards with free online PDF guides</p>
               </div>
-              <div className="stories-grid">
-                {successStories.map((story, index) => (
-                  <div
-                    key={story.id}
-                    className="story-card"
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="story-header">
-                      <div className="student-avatar">{story.image}</div>
-                      <div className="student-info">
-                        <h3>{story.name}</h3>
-                        <p>
-                          {story.role} at {story.company}
-                        </p>
-                        <span className="package">{story.package}</span>
+
+              <div className="row g-4">
+                {preparationResources.map((resource) => (
+                  <div key={resource.id} className="col-md-6 col-lg-4">
+                    <div className="card h-100 border shadow-sm rounded-4 p-4 hover-lift bg-body-tertiary d-flex flex-column">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <span className="badge bg-info-subtle text-info px-3 py-1 rounded-pill small fw-semibold">
+                          {resource.type}
+                        </span>
+                        <span className="fw-semibold text-warning small d-flex align-items-center gap-1">
+                          <FiStar size={14} className="fill-warning" /> {resource.rating}
+                        </span>
+                      </div>
+
+                      <h4 className="fw-bold mb-2">{resource.title}</h4>
+                      <p className="text-muted small flex-grow-1">{resource.description}</p>
+
+                      <div className="d-flex flex-wrap gap-1 mb-3">
+                        {resource.topics.map((t, idx) => (
+                          <span key={idx} className="badge bg-body border text-body-tertiary small fw-normal">
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="d-flex justify-content-between align-items-center text-muted small pt-3 border-top mb-3">
+                        <span className="d-flex align-items-center gap-1">
+                          <FiClock size={13} /> {resource.duration}
+                        </span>
+                        <span className="d-flex align-items-center gap-1">
+                          <FiUsers size={13} /> {resource.students.toLocaleString()} enrolled
+                        </span>
+                      </div>
+
+                      <div className="d-flex gap-2">
+                        <button
+                          className="btn btn-primary btn-sm flex-grow-1 rounded-3 fw-semibold d-flex align-items-center justify-content-center gap-2"
+                          onClick={() => setSelectedPdf({ title: resource.title, url: resource.pdfUrl, downloadSize: resource.downloadSize })}
+                        >
+                          <FiFileText size={15} /> <span>Read PDF</span>
+                        </button>
+                        <a
+                          href={resource.pdfUrl}
+                          download
+                          className="btn btn-outline-secondary btn-sm rounded-3 d-flex align-items-center"
+                          title="Download PDF"
+                        >
+                          <FiDownload size={14} />
+                        </a>
                       </div>
                     </div>
-                    <p className="story-text">{story.story}</p>
-                    <div className="story-tips">
-                      <h4>Success Tips:</h4>
-                      <ul>
-                        {story.tips.map((tip, idx) => (
-                          <li key={idx}>{tip}</li>
-                        ))}
-                      </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Interview Tips Tab Screen */}
+          {activeTab === "interviews" && (
+            <div className="interviews-content">
+              <div className="mb-4">
+                <h3 className="fw-bold m-0">Technical Interview Survival Tips & PDF Frameworks</h3>
+                <p className="text-muted small m-0">Proven strategies from senior software engineers to crack technical rounds</p>
+              </div>
+
+              <div className="row g-4">
+                {interviewTips.map((tip) => (
+                  <div key={tip.id} className="col-md-6">
+                    <div className="card h-100 border shadow-sm rounded-4 p-4 bg-body-tertiary hover-lift">
+                      <div className="d-flex align-items-center gap-3 mb-3">
+                        <div className="p-3 bg-warning-subtle text-warning-emphasis rounded-3 d-inline-flex">
+                          <FiTarget size={24} />
+                        </div>
+                        <div>
+                          <span className="badge bg-secondary-subtle text-secondary px-3 py-1 rounded-pill small fw-semibold">
+                            {tip.category}
+                          </span>
+                          <h4 className="fw-bold m-0 mt-1">{tip.title}</h4>
+                        </div>
+                      </div>
+                      <p className="text-muted small mb-3">{tip.summary}</p>
+
+                      <div className="bg-body p-3 rounded-3 border mb-4">
+                        <h6 className="fw-bold mb-2 text-primary small">Key Action Steps:</h6>
+                        <ul className="m-0 ps-3 small text-muted">
+                          {tip.tips.map((t, idx) => (
+                            <li key={idx} className="mb-1">{t}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <button
+                        className="btn btn-outline-primary rounded-3 w-100 fw-semibold d-flex align-items-center justify-content-center gap-2"
+                        onClick={() => setSelectedPdf({ title: tip.title, url: tip.pdfUrl, downloadSize: "3.5 MB" })}
+                      >
+                        <FiFileText size={15} /> <span>Open Full Guide PDF</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Success Stories Tab */}
+          {activeTab === "success" && (
+            <div className="success-content">
+              <div className="mb-4">
+                <h3 className="fw-bold m-0">Placement Success Stories</h3>
+                <p className="text-muted small m-0">Get inspired by StudiMI alumni who landed top engineering roles</p>
+              </div>
+
+              <div className="row g-4">
+                {successStories.map((story) => (
+                  <div key={story.id} className="col-md-4">
+                    <div className="card h-100 border shadow-sm rounded-4 p-4 hover-lift bg-body-tertiary text-center">
+                      <div className="p-3 bg-success-subtle text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto" style={{ width: "64px", height: "64px" }}>
+                        <FiUserCheck size={32} />
+                      </div>
+                      <h4 className="fw-bold m-0">{story.name}</h4>
+                      <p className="text-primary fw-semibold small mb-2">{story.role} at {story.company}</p>
+                      <span className="badge bg-success-subtle text-success fs-6 rounded-pill mb-3">{story.package}</span>
+                      <p className="text-muted small mb-4">"{story.story}"</p>
+
+                      <div className="text-start bg-body p-3 rounded-3 border">
+                        <h6 className="fw-semibold small text-secondary mb-2">Key Tips for Juniors:</h6>
+                        <ul className="ps-3 m-0 small text-muted">
+                          {story.tips.map((t, idx) => (
+                            <li key={idx}>{t}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -775,61 +984,101 @@ const Placement = () => {
 
       {/* Job Detail Modal */}
       {showModal && selectedJob && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>{selectedJob.title}</h2>
-              <button className="close-btn" onClick={() => setShowModal(false)}>
-                ✕
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="job-company-info">
-                <span className="company-logo large">
-                  {getCompanyInfo(selectedJob.company).logo}
-                </span>
+        <div
+          className="modal fade show d-block"
+          tabIndex="-1"
+          style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
+        >
+          <div className="modal-dialog modal-dialog-centered modal-lg">
+            <div className="modal-content rounded-4 shadow-lg border-0">
+              <div className="modal-header border-bottom">
+                <div className="d-flex align-items-center gap-3">
+                  <div className="p-2 bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center">
+                    <FaBuilding size={24} />
+                  </div>
+                  <div>
+                    <h5 className="modal-title fw-bold">{selectedJob.title}</h5>
+                    <p className="m-0 text-muted small">{getCompanyInfo(selectedJob.company).name} • {selectedJob.location}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-light btn-sm p-2"
+                  onClick={() => setShowModal(false)}
+                >
+                  <FiX size={18} />
+                </button>
+              </div>
+
+              <div className="modal-body p-4">
+                <div className="d-flex justify-content-between align-items-center bg-body-tertiary p-3 border rounded-3 mb-4">
+                  <div>
+                    <span className="text-muted small fw-semibold">Offered Package:</span>
+                    <h4 className="fw-bold text-success m-0">{selectedJob.salary}</h4>
+                  </div>
+                  <span className="badge bg-primary text-white fs-6 rounded-pill px-3 py-2">
+                    {selectedJob.type}
+                  </span>
+                </div>
+
+                <div className="mb-4">
+                  <h6 className="fw-bold mb-2">Job Overview</h6>
+                  <p className="text-muted small m-0">{selectedJob.description}</p>
+                </div>
+
+                <div className="mb-4">
+                  <h6 className="fw-bold mb-2">Key Requirements</h6>
+                  <ul className="list-group list-group-flush border rounded-3">
+                    {selectedJob.requirements.map((req, idx) => (
+                      <li key={idx} className="list-group-item bg-transparent d-flex align-items-center gap-2 small">
+                        <FiCheck className="text-success" /> <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
                 <div>
-                  <h3>{getCompanyInfo(selectedJob.company).name}</h3>
-                  <p>
-                    {selectedJob.location} • {selectedJob.type}
-                  </p>
-                </div>
-              </div>
-              <div className="job-salary">{selectedJob.salary}</div>
-
-              <div className="modal-section">
-                <h4>Job Description</h4>
-                <p>{selectedJob.description}</p>
-              </div>
-
-              <div className="modal-section">
-                <h4>Requirements</h4>
-                <ul>
-                  {selectedJob.requirements.map((req, idx) => (
-                    <li key={idx}>{req}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="modal-section">
-                <h4>Interview Process</h4>
-                <div className="interview-steps">
-                  {selectedJob.interviewProcess.map((step, idx) => (
-                    <div key={idx} className="interview-step">
-                      <span className="step-number">{idx + 1}</span>
-                      <span className="step-name">{step}</span>
-                    </div>
-                  ))}
+                  <h6 className="fw-bold mb-2">Interview Process Stages</h6>
+                  <div className="d-flex flex-wrap gap-2">
+                    {selectedJob.interviewProcess.map((step, idx) => (
+                      <span key={idx} className="badge bg-secondary-subtle text-secondary p-2 rounded-pill small">
+                        {idx + 1}. {step}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              <div className="modal-actions">
-                <button className="apply-btn primary">Apply Now</button>
-                <button className="apply-btn secondary">Save Job</button>
+              <div className="modal-footer border-top">
+                <button
+                  className="btn btn-secondary rounded-3"
+                  onClick={() => setShowModal(false)}
+                >
+                  Close
+                </button>
+                <button
+                  className="btn btn-primary rounded-3 fw-semibold px-4 d-flex align-items-center gap-2"
+                  onClick={() => {
+                    alert(`Application submitted successfully for ${selectedJob.title} at ${getCompanyInfo(selectedJob.company).name}!`);
+                    setShowModal(false);
+                  }}
+                >
+                  <span>Apply Now</span> <FiArrowRight size={16} />
+                </button>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Online Free PDF Viewer Modal */}
+      {selectedPdf && (
+        <PdfViewerModal
+          title={selectedPdf.title}
+          pdfUrl={selectedPdf.url}
+          downloadSize={selectedPdf.downloadSize}
+          onClose={() => setSelectedPdf(null)}
+        />
       )}
     </div>
   );

@@ -1,506 +1,147 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "./KZ.css";
+import {
+  FiZap,
+  FiVideo,
+  FiFileText,
+  FiHelpCircle,
+  FiCode,
+  FiFolder,
+  FiTool,
+  FiRadio,
+  FiSearch,
+  FiGrid,
+  FiList,
+  FiStar,
+  FiEye,
+  FiUser,
+  FiBookmark,
+  FiX,
+  FiSliders,
+  FiChevronDown,
+  FiChevronUp,
+  FiRotateCcw,
+} from "react-icons/fi";
 
 const Kzone = () => {
-  // Enhanced state management
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
   const [filteredContent, setFilteredContent] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
   const [selectedDifficulty, setSelectedDifficulty] = useState("all");
-  const [sortBy, setSortBy] = useState("popular");
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [bookmarkedItems, setBookmarkedItems] = useState(new Set());
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [showCategoriesContent, setShowCategoriesContent] = useState(true);
-  const [isMobileView, setIsMobileView] = useState(false);
 
-  // Enhanced categories with more detailed information and responsive features
-  const categories = useMemo(
-    () => [
-      {
-        id: "all",
-        name: "All Content",
-        shortName: "All",
-        icon: "🌟",
-        color: "#667eea",
-        count: 45,
-        description: "Browse all available content",
-        gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        isPopular: true,
-      },
-      {
-        id: "tutorials",
-        name: "Video Tutorials",
-        shortName: "Videos",
-        icon: "🎥",
-        color: "#e74c3c",
-        count: 12,
-        description: "Step-by-step video guides",
-        gradient: "linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)",
-        isNew: false,
-      },
-      {
-        id: "articles",
-        name: "Articles",
-        shortName: "Articles",
-        icon: "📖",
-        color: "#3498db",
-        count: 8,
-        description: "In-depth written content",
-        gradient: "linear-gradient(135deg, #3498db 0%, #2980b9 100%)",
-        isNew: false,
-      },
-      {
-        id: "quizzes",
-        name: "Interactive Quizzes",
-        shortName: "Quizzes",
-        icon: "🧩",
-        color: "#f39c12",
-        count: 15,
-        description: "Test your knowledge",
-        gradient: "linear-gradient(135deg, #f39c12 0%, #e67e22 100%)",
-        isPopular: true,
-      },
-      {
-        id: "code",
-        name: "Code Examples",
-        shortName: "Code",
-        icon: "💻",
-        color: "#2ecc71",
-        count: 6,
-        description: "Practical code snippets",
-        gradient: "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)",
-        isNew: false,
-      },
-      {
-        id: "projects",
-        name: "Mini Projects",
-        shortName: "Projects",
-        icon: "🚀",
-        color: "#9b59b6",
-        count: 3,
-        description: "Hands-on project tutorials",
-        gradient: "linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)",
-        isNew: true,
-      },
-      {
-        id: "tools",
-        name: "Study Tools",
-        shortName: "Tools",
-        icon: "🛠️",
-        color: "#e67e22",
-        count: 4,
-        description: "Interactive learning tools",
-        gradient: "linear-gradient(135deg, #e67e22 0%, #d35400 100%)",
-        isNew: false,
-      },
-      {
-        id: "live",
-        name: "Live Sessions",
-        shortName: "Live",
-        icon: "📺",
-        color: "#ff6b6b",
-        count: 2,
-        description: "Real-time learning sessions",
-        gradient: "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)",
-        isLive: true,
-      },
-    ],
-    []
-  );
-
-  const difficulties = ["all", "beginner", "intermediate", "advanced"];
-  const sortOptions = [
-    { value: "popular", label: "Most Popular" },
-    { value: "newest", label: "Newest First" },
-    { value: "rating", label: "Highest Rated" },
-    { value: "duration", label: "Shortest Duration" },
+  const categories = [
+    { id: "all", name: "All Content", icon: <FiZap size={16} /> },
+    { id: "tutorials", name: "Video Tutorials", icon: <FiVideo size={16} /> },
+    { id: "articles", name: "Tech Articles", icon: <FiFileText size={16} /> },
+    { id: "quizzes", name: "Skill Assessments", icon: <FiHelpCircle size={16} /> },
+    { id: "cheatsheets", name: "Cheat Sheets", icon: <FiCode size={16} /> },
+    { id: "resources", name: "Dev Resources", icon: <FiFolder size={16} /> },
+    { id: "tools", name: "Interactive Tools", icon: <FiTool size={16} /> },
+    { id: "podcasts", name: "Tech Podcasts", icon: <FiRadio size={16} /> },
   ];
 
-  // Handle responsive design
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobileView(mobile);
-      if (!mobile) {
-        setShowCategoriesContent(true);
-      }
-    };
+  const difficulties = ["all", "beginner", "intermediate", "advanced"];
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Toggle categories content visibility
-  const toggleCategoriesContent = () => {
-    setShowCategoriesContent(!showCategoriesContent);
-  };
-
-  // Enhanced knowledge content with more realistic data
   const knowledgeContent = useMemo(
     () => [
       {
         id: 1,
-        title: "Complete React.js Masterclass 2024",
+        title: "Modern React 18 & Redux Toolkit Architecture",
         category: "tutorials",
-        type: "Video Series",
         difficulty: "intermediate",
-        duration: "12 hours",
-        views: 45600,
+        readTime: "45 mins",
+        author: "Sarah Drasner",
+        views: 14200,
         rating: 4.9,
-        instructor: "Sarah Chen",
-        instructorAvatar: "👩‍💻",
-        description:
-          "Master React.js from basics to advanced concepts with hands-on projects, hooks, context, and real-world applications. Build 5 complete projects.",
-        topics: [
-          "Components",
-          "Hooks",
-          "State Management",
-          "Routing",
-          "API Integration",
-          "Testing",
-        ],
-        thumbnail: "🎬",
-        isPremium: false,
-        completionRate: 87,
-        students: 12400,
-        lastUpdated: "2024-01-15",
-        language: "English",
-        subtitles: ["English", "Spanish", "French"],
-        estimatedTime: "2 weeks",
-        certificates: true,
-        downloadable: true,
-        level: "Intermediate to Advanced",
+        description: "Master React 18 concurrent features, custom hooks, global state management with Redux Toolkit, and performance optimizations.",
+        topics: ["React", "Redux", "JavaScript", "Frontend"],
+        url: "https://react.dev",
+        type: "Video Course",
+        featured: true,
       },
       {
         id: 2,
-        title: "Interactive Data Structures Visualizer",
-        category: "tools",
-        type: "Interactive Tool",
-        difficulty: "beginner",
-        duration: "Self-paced",
+        title: "System Design Primer: Scalable Microservices",
+        category: "articles",
+        difficulty: "advanced",
+        readTime: "25 mins",
+        author: "Alex Xu",
         views: 28900,
-        rating: 4.8,
-        instructor: "Tech Academy",
-        instructorAvatar: "🏫",
-        description:
-          "Interactive visualization tool to understand data structures with step-by-step animations, algorithm complexity analysis, and hands-on practice.",
-        topics: [
-          "Arrays",
-          "Linked Lists",
-          "Trees",
-          "Graphs",
-          "Hash Tables",
-          "Sorting Algorithms",
-        ],
-        thumbnail: "🔧",
-        isPremium: false,
-        completionRate: 92,
-        students: 8700,
-        lastUpdated: "2024-02-01",
-        language: "Multiple",
-        subtitles: ["English"],
-        estimatedTime: "1 week",
-        certificates: false,
-        downloadable: false,
-        level: "Beginner Friendly",
+        rating: 4.95,
+        description: "Comprehensive blueprint on load balancers, database sharding, caching strategies, and distributed message queues.",
+        topics: ["System Design", "Microservices", "Kafka", "Redis"],
+        url: "https://bytebytego.com",
+        type: "Deep Dive Article",
+        featured: true,
       },
       {
         id: 3,
-        title: "Machine Learning Fundamentals & Neural Networks",
-        category: "articles",
-        type: "Article Series",
-        difficulty: "advanced",
-        duration: "8 hours read",
-        views: 67800,
+        title: "Data Structures & Algorithms Self-Assessment",
+        category: "quizzes",
+        difficulty: "intermediate",
+        readTime: "20 mins",
+        author: "StudiMI Editorial",
+        views: 8700,
         rating: 4.7,
-        instructor: "Dr. Michael Kumar",
-        instructorAvatar: "👨‍🔬",
-        description:
-          "Comprehensive guide to machine learning concepts, algorithms, and practical implementations. Covers supervised learning, deep learning, and real-world applications.",
-        topics: [
-          "Supervised Learning",
-          "Unsupervised Learning",
-          "Neural Networks",
-          "Deep Learning",
-          "TensorFlow",
-          "PyTorch",
-        ],
-        thumbnail: "📚",
-        isPremium: true,
-        completionRate: 78,
-        students: 15600,
-        lastUpdated: "2024-01-28",
-        language: "English",
-        subtitles: ["English", "Hindi"],
-        estimatedTime: "3 weeks",
-        certificates: true,
-        downloadable: true,
-        level: "Advanced",
+        description: "30 interactive multiple-choice questions testing graph traversal, dynamic programming recurrence relations, and tree rotations.",
+        topics: ["DSA", "Algorithms", "Practice"],
+        url: "#",
+        type: "Interactive Quiz",
+        featured: false,
       },
       {
         id: 4,
-        title: "JavaScript ES6+ Master Quiz Challenge",
-        category: "quizzes",
-        type: "Interactive Quiz",
-        difficulty: "intermediate",
-        duration: "45 minutes",
-        views: 34200,
-        rating: 4.6,
-        instructor: "Code Masters",
-        instructorAvatar: "⚡",
-        description:
-          "Test your JavaScript ES6+ knowledge with 100+ interactive quizzes, instant feedback, detailed explanations, and performance analytics.",
-        topics: [
-          "Arrow Functions",
-          "Destructuring",
-          "Promises",
-          "Async/Await",
-          "Modules",
-          "Classes",
-        ],
-        thumbnail: "🎯",
-        isPremium: false,
-        completionRate: 94,
-        students: 9800,
-        lastUpdated: "2024-02-10",
-        language: "English",
-        subtitles: ["English"],
-        estimatedTime: "2 days",
-        certificates: true,
-        downloadable: false,
-        level: "Intermediate",
+        title: "Complete Docker & Kubernetes Cheat Sheet",
+        category: "cheatsheets",
+        difficulty: "beginner",
+        readTime: "10 mins",
+        author: "DevOps Handbook",
+        views: 19400,
+        rating: 4.85,
+        description: "Essential Docker CLI commands, Dockerfile syntax, Kubernetes kubectl cheat sheet, and deployment YAML templates.",
+        topics: ["Docker", "Kubernetes", "DevOps"],
+        url: "https://kubernetes.io",
+        type: "PDF Reference",
+        featured: false,
       },
       {
         id: 5,
-        title: "Python Web Scraping Bootcamp",
-        category: "code",
-        type: "Code Repository",
-        difficulty: "intermediate",
-        duration: "6 hours",
-        views: 23400,
-        rating: 4.8,
-        instructor: "Python Guild",
-        instructorAvatar: "🐍",
-        description:
-          "Real-world Python web scraping examples with Beautiful Soup, Scrapy, and Selenium. Includes data cleaning, storage, and ethical scraping practices.",
-        topics: [
-          "Beautiful Soup",
-          "Scrapy",
-          "Selenium",
-          "Data Parsing",
-          "API Integration",
-          "Database Storage",
-        ],
-        thumbnail: "🐍",
-        isPremium: false,
-        completionRate: 85,
-        students: 6700,
-        lastUpdated: "2024-02-05",
-        language: "English",
-        subtitles: ["English", "Spanish"],
-        estimatedTime: "1 week",
-        certificates: false,
-        downloadable: true,
-        level: "Intermediate",
+        title: "Curated List of Free Developer APIs & Public Data",
+        category: "resources",
+        difficulty: "beginner",
+        readTime: "15 mins",
+        author: "Community",
+        views: 31200,
+        rating: 4.9,
+        description: "Over 500 free REST APIs for machine learning, weather, finance, sports, and placeholder data for student side projects.",
+        topics: ["APIs", "Open Source", "JSON"],
+        url: "https://github.com/public-apis/public-apis",
+        type: "Resource List",
+        featured: true,
       },
       {
         id: 6,
-        title: "Full-Stack E-commerce App with MERN",
-        category: "projects",
-        type: "Project Tutorial",
-        difficulty: "advanced",
-        duration: "20 hours",
-        views: 56700,
-        rating: 4.9,
-        instructor: "Full Stack Academy",
-        instructorAvatar: "🏆",
-        description:
-          "Build a complete e-commerce application from scratch using MERN stack with payment integration, user authentication, admin panel, and deployment.",
-        topics: [
-          "React",
-          "Node.js",
-          "MongoDB",
-          "Express",
-          "Payment Gateway",
-          "Authentication",
-          "AWS Deployment",
-        ],
-        thumbnail: "🛒",
-        isPremium: true,
-        completionRate: 73,
-        students: 4200,
-        lastUpdated: "2024-01-20",
-        language: "English",
-        subtitles: ["English", "Hindi", "Spanish"],
-        estimatedTime: "4 weeks",
-        certificates: true,
-        downloadable: true,
-        level: "Advanced",
-      },
-      {
-        id: 7,
-        title: "CSS Grid & Flexbox Modern Layouts",
-        category: "tutorials",
-        type: "Video Tutorial",
-        difficulty: "beginner",
-        duration: "6 hours",
-        views: 41200,
-        rating: 4.7,
-        instructor: "Design Pro",
-        instructorAvatar: "🎨",
-        description:
-          "Master modern CSS layout techniques with practical examples, responsive design patterns, and real-world projects. Perfect for beginners and intermediates.",
-        topics: [
-          "CSS Grid",
-          "Flexbox",
-          "Responsive Design",
-          "Media Queries",
-          "Layout Patterns",
-          "Mobile First",
-        ],
-        thumbnail: "🎨",
-        isPremium: false,
-        completionRate: 89,
-        students: 11200,
-        lastUpdated: "2024-02-08",
-        language: "English",
-        subtitles: ["English", "French"],
-        estimatedTime: "1 week",
-        certificates: true,
-        downloadable: false,
-        level: "Beginner to Intermediate",
-      },
-      {
-        id: 8,
-        title: "Algorithm Complexity & Big O Notation",
-        category: "quizzes",
-        type: "Assessment",
-        difficulty: "advanced",
-        duration: "60 minutes",
-        views: 19800,
-        rating: 4.5,
-        instructor: "Algo Expert",
-        instructorAvatar: "⚡",
-        description:
-          "Test your understanding of Big O notation, time complexity, space complexity, and algorithm analysis with detailed explanations and visual examples.",
-        topics: [
-          "Big O Notation",
-          "Time Complexity",
-          "Space Complexity",
-          "Algorithm Analysis",
-          "Optimization",
-          "Performance",
-        ],
-        thumbnail: "⚡",
-        isPremium: false,
-        completionRate: 76,
-        students: 5400,
-        lastUpdated: "2024-02-12",
-        language: "English",
-        subtitles: ["English"],
-        estimatedTime: "3 days",
-        certificates: true,
-        downloadable: false,
-        level: "Advanced",
-      },
-      {
-        id: 9,
-        title: "Live Coding Session: Building REST APIs",
-        category: "live",
-        type: "Live Workshop",
-        difficulty: "intermediate",
-        duration: "3 hours",
-        views: 15600,
-        rating: 4.8,
-        instructor: "API Master",
-        instructorAvatar: "🔴",
-        description:
-          "Join our live coding session where we build a complete REST API from scratch with authentication, validation, testing, and documentation.",
-        topics: [
-          "REST API",
-          "Node.js",
-          "Express",
-          "Authentication",
-          "Validation",
-          "Testing",
-          "Documentation",
-        ],
-        thumbnail: "📺",
-        isPremium: true,
-        completionRate: 95,
-        students: 2100,
-        lastUpdated: "2024-02-15",
-        language: "English",
-        subtitles: ["English"],
-        estimatedTime: "3 hours",
-        certificates: true,
-        downloadable: false,
-        level: "Intermediate",
-        isLive: true,
-        nextSession: "2024-02-20T15:00:00Z",
-      },
-      {
-        id: 10,
-        title: "Code Review Checklist & Best Practices",
+        title: "Interactive Regex Tester & Visualizer",
         category: "tools",
-        type: "Interactive Checklist",
-        difficulty: "intermediate",
-        duration: "2 hours",
-        views: 31200,
+        difficulty: "beginner",
+        readTime: "5 mins",
+        author: "StudiMI Tools",
+        views: 11500,
         rating: 4.6,
-        instructor: "Code Quality Team",
-        instructorAvatar: "✅",
-        description:
-          "Interactive checklist and guide for conducting effective code reviews, with examples, templates, and best practices for teams.",
-        topics: [
-          "Code Review",
-          "Best Practices",
-          "Quality Assurance",
-          "Team Collaboration",
-          "Documentation",
-          "Testing",
-        ],
-        thumbnail: "✅",
-        isPremium: false,
-        completionRate: 88,
-        students: 7300,
-        lastUpdated: "2024-02-07",
-        language: "English",
-        subtitles: ["English", "Spanish"],
-        estimatedTime: "2 days",
-        certificates: false,
-        downloadable: true,
-        level: "Intermediate",
+        description: "Test regular expressions in real-time with visual tree breakdowns, match group highlights, and common syntax reference.",
+        topics: ["Regex", "Developer Tools", "Utility"],
+        url: "https://regex101.com",
+        type: "Web Tool",
+        featured: false,
       },
     ],
     []
   );
 
-  // Enhanced trending topics with more data
-  const trendingTopics = [
-    { name: "React Hooks", count: 234, trend: "up", color: "#61dafb" },
-    { name: "Machine Learning", count: 189, trend: "up", color: "#ff6b6b" },
-    { name: "JavaScript ES6", count: 156, trend: "stable", color: "#f7df1e" },
-    { name: "Python Data Science", count: 143, trend: "up", color: "#3776ab" },
-    { name: "CSS Grid", count: 128, trend: "down", color: "#1572b6" },
-    { name: "Node.js", count: 112, trend: "up", color: "#339933" },
-    { name: "TypeScript", count: 98, trend: "up", color: "#3178c6" },
-    { name: "Vue.js", count: 87, trend: "stable", color: "#4fc08d" },
-  ];
-
-  const weeklyStats = {
-    totalViews: 234567,
-    newContent: 45,
-    activeUsers: 12890,
-    completionRate: 84,
-  };
-
-  // Enhanced filtering and sorting logic
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
@@ -513,599 +154,248 @@ const Kzone = () => {
         const matchesSearch =
           item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.topics.some((topic) =>
-            topic.toLowerCase().includes(searchTerm.toLowerCase())
-          ) ||
-          item.instructor.toLowerCase().includes(searchTerm.toLowerCase());
+          item.topics.some((t) => t.toLowerCase().includes(searchTerm.toLowerCase()));
         return matchesCategory && matchesDifficulty && matchesSearch;
       });
 
-      // Sort the filtered content
-      filtered.sort((a, b) => {
-        switch (sortBy) {
-          case "newest":
-            return new Date(b.lastUpdated) - new Date(a.lastUpdated);
-          case "rating":
-            return b.rating - a.rating;
-          case "duration":
-            const getDurationMinutes = (duration) => {
-              const hours = duration.match(/(\d+)\s*hours?/i);
-              const minutes = duration.match(/(\d+)\s*minutes?/i);
-              return (
-                (hours ? parseInt(hours[1]) * 60 : 0) +
-                (minutes ? parseInt(minutes[1]) : 0)
-              );
-            };
-            return (
-              getDurationMinutes(a.duration) - getDurationMinutes(b.duration)
-            );
-          default: // popular
-            return b.views - a.views;
-        }
-      });
+      filtered.sort((a, b) => b.views - a.views);
 
       setFilteredContent(filtered);
       setIsLoading(false);
-    }, 400);
-  }, [
-    activeCategory,
-    selectedDifficulty,
-    searchTerm,
-    sortBy,
-    knowledgeContent,
-  ]);
+    }, 250);
+  }, [activeCategory, selectedDifficulty, searchTerm, knowledgeContent]);
 
-  // Utility functions
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty) {
-      case "beginner":
-        return "#28a745";
-      case "intermediate":
-        return "#ffc107";
-      case "advanced":
-        return "#dc3545";
-      default:
-        return "#6c757d";
-    }
-  };
+  const activeFiltersCount = (activeCategory !== "all" ? 1 : 0) + (selectedDifficulty !== "all" ? 1 : 0);
 
-  const getTrendIcon = (trend) => {
-    switch (trend) {
-      case "up":
-        return "📈";
-      case "down":
-        return "📉";
-      case "stable":
-        return "➡️";
-      default:
-        return "➡️";
-    }
-  };
-
-  const formatNumber = (num) => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-    return num.toString();
-  };
-
-  const handleBookmark = (itemId) => {
+  const handleBookmark = (id) => {
     setBookmarkedItems((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(itemId)) {
-        newSet.delete(itemId);
-      } else {
-        newSet.add(itemId);
-      }
-      return newSet;
+      const updated = new Set(prev);
+      if (updated.has(id)) updated.delete(id);
+      else updated.add(id);
+      return updated;
     });
   };
 
-  const openContentModal = (content) => {
-    setSelectedContent(content);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedContent(null);
-  };
-
-  const getTimeAgo = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now - date);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
-    return `${Math.ceil(diffDays / 30)} months ago`;
-  };
-
   return (
-    <div className="kzone-container">
-      {/* Hero Section */}
-      <section className="kzone-hero">
-        <div className="hero-background">
-          <div className="floating-knowledge">
-            <div className="knowledge-particle">💡</div>
-            <div className="knowledge-particle">📚</div>
-            <div className="knowledge-particle">🎓</div>
-            <div className="knowledge-particle">🧠</div>
-            <div className="knowledge-particle">⚡</div>
-            <div className="knowledge-particle">🚀</div>
-            <div className="knowledge-particle">🔬</div>
-            <div className="knowledge-particle">💻</div>
-          </div>
-        </div>
+    <div className="kzone-container py-4 position-relative pb-5">
+      {/* Header Section */}
+      <section className="py-4 mb-4 bg-body-tertiary border-bottom">
         <div className="container">
-          <div className="hero-content">
-            <h1 className="hero-title">
-              Knowledge <span className="gradient-text">Zone</span>
-            </h1>
-            <p className="hero-description">
-              Explore our comprehensive learning hub with interactive tutorials,
-              code examples, quizzes, and tools to accelerate your learning
-              journey
-            </p>
-            <div className="weekly-stats">
-              <div className="stat-card">
-                <div className="stat-icon">👁️</div>
-                <div className="stat-info">
-                  <span className="stat-number">
-                    {formatNumber(weeklyStats.totalViews)}
-                  </span>
-                  <span className="stat-label">Total Views</span>
-                </div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-icon">✨</div>
-                <div className="stat-info">
-                  <span className="stat-number">{weeklyStats.newContent}</span>
-                  <span className="stat-label">New This Week</span>
-                </div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-icon">👥</div>
-                <div className="stat-info">
-                  <span className="stat-number">
-                    {formatNumber(weeklyStats.activeUsers)}
-                  </span>
-                  <span className="stat-label">Active Learners</span>
-                </div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-icon">🎯</div>
-                <div className="stat-info">
-                  <span className="stat-number">
-                    {weeklyStats.completionRate}%
-                  </span>
-                  <span className="stat-label">Success Rate</span>
-                </div>
-              </div>
+          <h1 className="display-6 fw-bold mb-2 text-body d-flex align-items-center gap-3">
+            <div className="p-2 bg-info-subtle text-info rounded-3 d-inline-flex">
+              <FiZap size={26} />
             </div>
-          </div>
+            <span>Developer Knowledge Zone</span>
+          </h1>
+          <p className="lead text-muted m-0 fs-6" style={{ maxWidth: "720px" }}>
+            Curated technical tutorials, system design articles, interactive cheatsheets, and essential developer learning resources.
+          </p>
         </div>
       </section>
 
-      {/* Trending Topics Bar */}
-      <section className="trending-section">
+      {/* Search & Collapsible Filters Bar */}
+      <section className="mb-4">
         <div className="container">
-          <div className="trending-header">
-            <h3>🔥 Trending Topics</h3>
-            <div className="trending-scroll">
-              {trendingTopics.map((topic, index) => (
-                <div
-                  key={index}
-                  className="trending-item"
-                  style={{ "--trend-color": topic.color }}
-                >
-                  <span className="trend-icon">
-                    {getTrendIcon(topic.trend)}
+          <div className="bg-body-tertiary p-3 p-md-4 rounded-4 shadow-sm border mb-4">
+            <div className="row g-3 align-items-center">
+              <div className="col-md-6">
+                <div className="input-group shadow-sm rounded-3 overflow-hidden border">
+                  <span className="input-group-text bg-body border-end-0 text-muted">
+                    <FiSearch size={18} />
                   </span>
-                  <span className="trend-name">{topic.name}</span>
-                  <span className="trend-count">{topic.count}</span>
-                  <div
-                    className="trend-indicator"
-                    style={{ backgroundColor: topic.color }}
-                  ></div>
-                </div>
-              ))}
-            </div>
-            <button className="view-all-trends">View All</button>
-          </div>
-        </div>
-      </section>
-
-      {/* Search and Filter Section */}
-      <section className="filter-section">
-        <div className="container">
-          <div className="search-controls">
-            <div className="search-box">
-              <div className="search-icon">🔍</div>
-              <input
-                type="text"
-                placeholder="Search tutorials, articles, tools, or topics..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-              {searchTerm && (
-                <button
-                  className="clear-search"
-                  onClick={() => setSearchTerm("")}
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-
-            <div className="control-group">
-              <div className="sort-controls">
-                <label className="control-label">Sort by:</label>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="sort-select"
-                >
-                  {sortOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="view-controls">
-                <button
-                  className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
-                  onClick={() => setViewMode("grid")}
-                >
-                  <i className="fas fa-th-large"></i>
-                  Grid
-                </button>
-                <button
-                  className={`view-btn ${viewMode === "list" ? "active" : ""}`}
-                  onClick={() => setViewMode("list")}
-                >
-                  <i className="fas fa-list"></i>
-                  List
-                </button>
-              </div>
-
-              <button
-                className="mobile-filter-btn"
-                onClick={() => setShowMobileFilters(!showMobileFilters)}
-              >
-                <i className="fas fa-filter"></i>
-                Filters
-              </button>
-            </div>
-          </div>
-
-          <div
-            className={`filter-controls ${
-              showMobileFilters ? "mobile-open" : ""
-            }`}
-          >
-            {/* Enhanced Categories Section */}
-            <div className="categories-section">
-              <div className="categories-header">
-                <div>
-                  <h3 className="categories-title">
-                    <span>📚</span>
-                    Browse Categories
-                  </h3>
-                  <p className="categories-subtitle">
-                    Choose from {categories.length} content categories
-                  </p>
-                </div>
-                <button
-                  className={`categories-toggle ${
-                    !showCategoriesContent ? "collapsed" : ""
-                  }`}
-                  onClick={toggleCategoriesContent}
-                  aria-expanded={showCategoriesContent}
-                  aria-controls="categories-content"
-                >
-                  <span>
-                    {showCategoriesContent ? "Hide" : "Show"} Categories
-                  </span>
-                  <span className="toggle-icon">
-                    {showCategoriesContent ? "▲" : "▼"}
-                  </span>
-                </button>
-              </div>
-
-              <div
-                id="categories-content"
-                className={`categories-content ${
-                  !showCategoriesContent ? "hidden" : ""
-                }`}
-                aria-hidden={!showCategoriesContent}
-              >
-                <div className="enhanced-category-filters" role="tablist">
-                  {categories.map((category) => (
+                  <input
+                    type="text"
+                    placeholder="Search by topic, article title, technology stack..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="form-control border-start-0 bg-body shadow-none"
+                  />
+                  {searchTerm && (
                     <button
-                      key={category.id}
-                      className={`enhanced-category-btn ${
-                        activeCategory === category.id ? "active" : ""
-                      }`}
-                      onClick={() => setActiveCategory(category.id)}
-                      style={{
-                        "--category-color": category.color,
-                        "--category-gradient": category.gradient,
-                      }}
-                      title={category.description}
-                      aria-selected={activeCategory === category.id}
-                      role="tab"
+                      className="btn btn-outline-secondary border-start-0 bg-body text-muted"
+                      onClick={() => setSearchTerm("")}
                     >
-                      <div className="category-icon-wrapper">
-                        <span>{category.icon}</span>
-                      </div>
-                      <div className="category-info">
-                        <div className="category-main-name">
-                          {isMobileView ? category.shortName : category.name}
-                        </div>
-                        <div className="category-description">
-                          {category.description}
-                        </div>
-                        <div className="category-meta">
-                          <span className="enhanced-category-count">
-                            <span className="count-icon">📄</span>
-                            {category.count}
-                          </span>
-                          {category.isPopular && (
-                            <span className="category-badge badge-popular">
-                              Popular
-                            </span>
-                          )}
-                          {category.isNew && (
-                            <span className="category-badge badge-new">
-                              New
-                            </span>
-                          )}
-                          {category.isLive && (
-                            <span className="category-badge badge-live">
-                              Live
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                      <FiX size={16} />
                     </button>
-                  ))}
+                  )}
+                </div>
+              </div>
+
+              <div className="col-md-6 d-flex align-items-center justify-content-md-end gap-2 flex-wrap">
+                <button
+                  className={`btn btn-filter-toggle d-flex align-items-center gap-2 ${
+                    showFilters || activeFiltersCount > 0 ? "active" : ""
+                  }`}
+                  onClick={() => setShowFilters(!showFilters)}
+                >
+                  <FiSliders size={16} />
+                  <span>Filter Options</span>
+                  {activeFiltersCount > 0 && (
+                    <span className="badge bg-info text-white rounded-pill ms-1 px-2">
+                      {activeFiltersCount}
+                    </span>
+                  )}
+                  {showFilters ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+                </button>
+
+                {activeFiltersCount > 0 && (
+                  <button
+                    className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                    onClick={() => {
+                      setActiveCategory("all");
+                      setSelectedDifficulty("all");
+                    }}
+                    title="Reset Filters"
+                  >
+                    <FiRotateCcw size={14} />
+                    <span className="d-none d-sm-inline">Reset</span>
+                  </button>
+                )}
+
+                <div className="btn-group border rounded-3 p-1 bg-body ms-auto ms-md-0">
+                  <button
+                    className={`btn btn-sm ${viewMode === "grid" ? "btn-primary" : "btn-light"}`}
+                    onClick={() => setViewMode("grid")}
+                    title="Grid View"
+                  >
+                    <FiGrid size={15} />
+                  </button>
+                  <button
+                    className={`btn btn-sm ${viewMode === "list" ? "btn-primary" : "btn-light"}`}
+                    onClick={() => setViewMode("list")}
+                    title="List View"
+                  >
+                    <FiList size={15} />
+                  </button>
                 </div>
               </div>
             </div>
 
-            <div className="filter-group">
-              <label className="filter-label">Difficulty Level</label>
-              <div className="difficulty-filters">
-                {difficulties.map((difficulty) => (
-                  <button
-                    key={difficulty}
-                    className={`difficulty-btn ${
-                      selectedDifficulty === difficulty ? "active" : ""
-                    }`}
-                    onClick={() => setSelectedDifficulty(difficulty)}
-                  >
-                    {difficulty === "all"
-                      ? "All Levels"
-                      : difficulty.charAt(0).toUpperCase() +
-                        difficulty.slice(1)}
-                  </button>
-                ))}
+            {/* Collapsible Panel for Category & Difficulty Filters */}
+            {showFilters && (
+              <div className="collapsible-filter-panel mt-3 pt-3 border-top">
+                <div className="mb-3">
+                  <label className="fw-semibold small text-muted d-block mb-2">Category:</label>
+                  <div className="d-flex flex-wrap gap-2">
+                    {categories.map((cat) => (
+                      <button
+                        key={cat.id}
+                        className={`btn btn-sm rounded-3 px-3 py-2 border transition-all d-flex align-items-center gap-2 ${
+                          activeCategory === cat.id ? "btn-info text-white shadow-sm" : "btn-outline-secondary"
+                        }`}
+                        onClick={() => setActiveCategory(cat.id)}
+                      >
+                        {cat.icon}
+                        <span>{cat.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="fw-semibold small text-muted d-block mb-2">Difficulty Level:</label>
+                  <div className="d-flex flex-wrap gap-2">
+                    {difficulties.map((diff) => (
+                      <button
+                        key={diff}
+                        className={`btn btn-sm rounded-3 px-3 py-2 border text-capitalize transition-all ${
+                          selectedDifficulty === diff ? "btn-primary shadow-sm" : "btn-outline-secondary"
+                        }`}
+                        onClick={() => setSelectedDifficulty(diff)}
+                      >
+                        {diff}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Content Grid/List */}
-      <section className="content-section">
+      {/* Content Grid */}
+      <section className="py-2">
         <div className="container">
           {isLoading ? (
-            <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <p>Loading knowledge content...</p>
+            <div className="text-center py-5">
+              <div className="spinner-border text-info" role="status"></div>
+              <p className="mt-2 text-muted">Loading knowledge base...</p>
             </div>
           ) : (
             <>
-              <div className="content-header">
-                <h2>
-                  {activeCategory === "all"
-                    ? "All Content"
-                    : categories.find((c) => c.id === activeCategory)?.name}
-                  {selectedDifficulty !== "all" &&
-                    ` - ${
-                      selectedDifficulty.charAt(0).toUpperCase() +
-                      selectedDifficulty.slice(1)
-                    }`}
-                </h2>
-                <p className="content-count">
-                  {filteredContent.length} item
-                  {filteredContent.length !== 1 ? "s" : ""} found
-                </p>
-              </div>
-
-              <div className={`content-grid ${viewMode}`}>
-                {filteredContent.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={`content-card ${viewMode} ${
-                      item.isLive ? "live-content" : ""
-                    }`}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <div className="content-thumbnail">
-                      <div className="thumbnail-icon">{item.thumbnail}</div>
-                      {item.isPremium && (
-                        <div className="premium-badge">✨ Premium</div>
-                      )}
-                      {item.isLive && <div className="live-badge">🔴 Live</div>}
-                      {item.certificates && (
-                        <div className="certificate-badge">🏆 Certificate</div>
-                      )}
-                      <div className="content-overlay">
-                        <button
-                          className="play-btn"
-                          onClick={() => openContentModal(item)}
-                        >
-                          {item.isLive ? "🔴" : "▶️"}
-                        </button>
-                      </div>
-                      <div className="quick-actions">
-                        <button
-                          className={`bookmark-btn ${
-                            bookmarkedItems.has(item.id) ? "bookmarked" : ""
-                          }`}
-                          onClick={() => handleBookmark(item.id)}
-                        >
-                          {bookmarkedItems.has(item.id) ? "❤️" : "🤍"}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="content-info">
-                      <div className="content-meta">
-                        <span className="content-type">{item.type}</span>
-                        <span
-                          className="difficulty-badge"
-                          style={{
-                            backgroundColor: getDifficultyColor(
-                              item.difficulty
-                            ),
-                          }}
-                        >
-                          {item.difficulty}
-                        </span>
-                        {item.downloadable && (
-                          <span className="feature-badge">📥 Downloadable</span>
-                        )}
-                      </div>
-
-                      <h3
-                        className="content-title"
-                        onClick={() => openContentModal(item)}
-                      >
-                        {item.title}
-                      </h3>
-                      <p className="content-description">{item.description}</p>
-
-                      <div className="instructor-info">
-                        <div className="instructor-avatar">
-                          {item.instructorAvatar}
-                        </div>
-                        <div className="instructor-details">
-                          <span className="instructor-name">
-                            {item.instructor}
+              <div className={viewMode === "grid" ? "row g-4" : "d-flex flex-column gap-3"}>
+                {filteredContent.map((item) => {
+                  const isBookmarked = bookmarkedItems.has(item.id);
+                  return (
+                    <div
+                      key={item.id}
+                      className={viewMode === "grid" ? "col-md-6 col-lg-4" : "col-12"}
+                    >
+                      <div className="card h-100 border shadow-sm rounded-4 p-3 hover-lift bg-body-tertiary d-flex flex-column">
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <span className="badge bg-info-subtle text-info rounded-pill px-3 py-1 small fw-semibold">
+                            {item.type}
                           </span>
-                          <span className="content-level">{item.level}</span>
-                        </div>
-                      </div>
-
-                      <div className="content-details">
-                        <div className="detail-item">
-                          <i className="fas fa-clock"></i>
-                          <span>{item.duration}</span>
-                        </div>
-                        <div className="detail-item">
-                          <i className="fas fa-eye"></i>
-                          <span>{formatNumber(item.views)} views</span>
-                        </div>
-                        <div className="detail-item">
-                          <i className="fas fa-star"></i>
-                          <span>
-                            {item.rating} ({formatNumber(item.students)})
+                          <span className="fw-semibold text-warning small d-flex align-items-center gap-1">
+                            <FiStar size={14} className="fill-warning" /> {item.rating}
                           </span>
                         </div>
-                        <div className="detail-item">
-                          <i className="fas fa-calendar"></i>
-                          <span>{getTimeAgo(item.lastUpdated)}</span>
-                        </div>
-                      </div>
 
-                      <div className="content-topics">
-                        {item.topics.slice(0, 4).map((topic, idx) => (
-                          <span key={idx} className="topic-tag">
-                            {topic}
-                          </span>
-                        ))}
-                        {item.topics.length > 4 && (
-                          <span className="topic-more">
-                            +{item.topics.length - 4} more
-                          </span>
-                        )}
-                      </div>
+                        <div className="card-body p-0 py-2 flex-grow-1">
+                          <h5 className="card-title fw-bold m-0 mb-2">{item.title}</h5>
+                          <p className="card-text text-muted small line-clamp-3 mb-3">
+                            {item.description}
+                          </p>
 
-                      <div className="progress-section">
-                        <div className="progress-info">
-                          <span>Success Rate</span>
-                          <span>{item.completionRate}%</span>
-                        </div>
-                        <div className="progress-bar">
-                          <div
-                            className="progress-fill"
-                            style={{ width: `${item.completionRate}%` }}
-                          ></div>
-                        </div>
-                      </div>
-
-                      {item.isLive && item.nextSession && (
-                        <div className="next-session">
-                          <i className="fas fa-calendar-alt"></i>
-                          <span>
-                            Next session:{" "}
-                            {new Date(item.nextSession).toLocaleDateString()}
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="language-info">
-                        <div className="language-item">
-                          <i className="fas fa-globe"></i>
-                          <span>{item.language}</span>
-                        </div>
-                        {item.subtitles && item.subtitles.length > 0 && (
-                          <div className="subtitles-info">
-                            <i className="fas fa-closed-captioning"></i>
-                            <span>{item.subtitles.join(", ")}</span>
+                          <div className="d-flex flex-wrap gap-1 mb-3">
+                            {item.topics.map((t, idx) => (
+                              <span key={idx} className="badge bg-body border text-body-tertiary small fw-normal">
+                                #{t}
+                              </span>
+                            ))}
                           </div>
-                        )}
+
+                          <div className="text-muted small d-flex justify-content-between align-items-center pt-2 border-top">
+                            <span className="d-flex align-items-center gap-1">
+                              <FiUser size={13} /> {item.author}
+                            </span>
+                            <span className="d-flex align-items-center gap-1">
+                              <FiEye size={13} /> {item.views.toLocaleString()}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="card-footer bg-transparent border-0 p-0 pt-3 d-flex gap-2">
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-info btn-sm text-white flex-grow-1 rounded-3 fw-semibold d-flex align-items-center justify-content-center gap-2"
+                          >
+                            <FiZap size={15} /> <span>Explore Content</span>
+                          </a>
+                          <button
+                            className={`btn btn-sm rounded-3 ${isBookmarked ? "btn-warning" : "btn-outline-secondary"}`}
+                            onClick={() => handleBookmark(item.id)}
+                            title="Bookmark"
+                          >
+                            <FiBookmark size={15} />
+                          </button>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="content-actions">
-                      <button
-                        className="action-btn primary"
-                        onClick={() => openContentModal(item)}
-                      >
-                        <i className="fas fa-play"></i>
-                        {item.isLive ? "Join Live" : "Start Learning"}
-                      </button>
-                      <button
-                        className={`action-btn secondary ${
-                          bookmarkedItems.has(item.id) ? "bookmarked" : ""
-                        }`}
-                        onClick={() => handleBookmark(item.id)}
-                      >
-                        <i className="fas fa-bookmark"></i>
-                        {bookmarkedItems.has(item.id) ? "Saved" : "Save"}
-                      </button>
-                      <button className="action-btn icon">
-                        <i className="fas fa-share"></i>
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {filteredContent.length === 0 && (
-                <div className="no-results">
-                  <div className="no-results-icon">🔍</div>
-                  <h3>No content found</h3>
-                  <p>Try adjusting your search or filter criteria</p>
+                <div className="text-center py-5 my-4 bg-body-tertiary rounded-4 border">
+                  <FiZap size={40} className="text-muted mb-3" />
+                  <h4>No Content Matches Your Filters</h4>
+                  <p className="text-muted">Try resetting search keywords or category selections.</p>
                   <button
-                    className="reset-btn"
+                    className="btn btn-outline-info rounded-3 px-4"
                     onClick={() => {
                       setSearchTerm("");
                       setActiveCategory("all");
@@ -1120,185 +410,6 @@ const Kzone = () => {
           )}
         </div>
       </section>
-
-      {/* Featured Content Showcase */}
-      <section className="featured-section">
-        <div className="container">
-          <div className="featured-content">
-            <div className="featured-text">
-              <h2>🌟 Featured Learning Experience</h2>
-              <p>
-                Discover our most popular and highly-rated content, carefully
-                curated by expert instructors and loved by thousands of learners
-                worldwide.
-              </p>
-              <ul className="featured-highlights">
-                <li>🎥 HD video tutorials with crystal clear explanations</li>
-                <li>💻 Interactive code examples you can run and modify</li>
-                <li>🧩 Gamified quizzes with instant feedback</li>
-                <li>🏆 Certificates upon successful completion</li>
-                <li>📱 Access across all devices - learn anywhere, anytime</li>
-              </ul>
-              <button className="featured-btn">
-                Explore Featured Content
-                <i className="fas fa-arrow-right"></i>
-              </button>
-            </div>
-            <div className="featured-visual">
-              <div className="visual-placeholder">
-                <div className="floating-icons">
-                  <div className="float-icon">🎓</div>
-                  <div className="float-icon">💡</div>
-                  <div className="float-icon">🚀</div>
-                  <div className="float-icon">⭐</div>
-                </div>
-                <h3>Interactive Learning Hub</h3>
-                <p>Experience next-level education</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Content Modal */}
-      {showModal && selectedContent && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="content-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>
-              ✕
-            </button>
-
-            <div className="modal-header">
-              <div className="modal-thumbnail">
-                <div className="modal-icon">{selectedContent.thumbnail}</div>
-                {selectedContent.isPremium && (
-                  <div className="premium-badge">✨ Premium</div>
-                )}
-                {selectedContent.isLive && (
-                  <div className="live-badge">🔴 Live</div>
-                )}
-              </div>
-              <div className="modal-info">
-                <h2>{selectedContent.title}</h2>
-                <div className="modal-meta">
-                  <span className="content-type">{selectedContent.type}</span>
-                  <span
-                    className="difficulty-badge"
-                    style={{
-                      backgroundColor: getDifficultyColor(
-                        selectedContent.difficulty
-                      ),
-                    }}
-                  >
-                    {selectedContent.difficulty}
-                  </span>
-                  <span className="duration">{selectedContent.duration}</span>
-                  <span className="rating">⭐ {selectedContent.rating}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="modal-body">
-              <div className="modal-description">
-                <h3>About this content</h3>
-                <p>{selectedContent.description}</p>
-              </div>
-
-              <div className="modal-instructor">
-                <div className="instructor-avatar">
-                  {selectedContent.instructorAvatar}
-                </div>
-                <div className="instructor-details">
-                  <h4>{selectedContent.instructor}</h4>
-                  <p>{selectedContent.level}</p>
-                </div>
-              </div>
-
-              <div className="modal-topics">
-                <h3>What you'll learn</h3>
-                <div className="topics-grid">
-                  {selectedContent.topics.map((topic, idx) => (
-                    <div key={idx} className="topic-item">
-                      <i className="fas fa-check"></i>
-                      <span>{topic}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="modal-details">
-                <div className="detail-grid">
-                  <div className="detail-card">
-                    <i className="fas fa-users"></i>
-                    <div>
-                      <strong>{formatNumber(selectedContent.students)}</strong>
-                      <span>Students</span>
-                    </div>
-                  </div>
-                  <div className="detail-card">
-                    <i className="fas fa-eye"></i>
-                    <div>
-                      <strong>{formatNumber(selectedContent.views)}</strong>
-                      <span>Views</span>
-                    </div>
-                  </div>
-                  <div className="detail-card">
-                    <i className="fas fa-chart-line"></i>
-                    <div>
-                      <strong>{selectedContent.completionRate}%</strong>
-                      <span>Success Rate</span>
-                    </div>
-                  </div>
-                  <div className="detail-card">
-                    <i className="fas fa-globe"></i>
-                    <div>
-                      <strong>{selectedContent.language}</strong>
-                      <span>Language</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {selectedContent.isLive && selectedContent.nextSession && (
-                <div className="live-session-info">
-                  <h3>🔴 Next Live Session</h3>
-                  <p>
-                    {new Date(selectedContent.nextSession).toLocaleString()}
-                  </p>
-                  <p>
-                    Join thousands of learners in our interactive live coding
-                    session!
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="modal-actions">
-              <button className="action-btn primary large">
-                <i className="fas fa-play"></i>
-                {selectedContent.isLive
-                  ? "Join Live Session"
-                  : "Start Learning Now"}
-              </button>
-              <button
-                className={`action-btn secondary ${
-                  bookmarkedItems.has(selectedContent.id) ? "bookmarked" : ""
-                }`}
-                onClick={() => handleBookmark(selectedContent.id)}
-              >
-                <i className="fas fa-bookmark"></i>
-                {bookmarkedItems.has(selectedContent.id)
-                  ? "Saved"
-                  : "Save for Later"}
-              </button>
-              <button className="action-btn icon">
-                <i className="fas fa-share"></i>
-                Share
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
