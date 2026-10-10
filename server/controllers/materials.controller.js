@@ -77,7 +77,7 @@ exports.createMaterial = async (req, res, next) => {
     }
 
     const fileUrl = req.file
-      ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
+      ? req.file.path
       : bodyFileUrl;
 
     const fileType = req.file
@@ -117,7 +117,7 @@ exports.updateMaterial = async (req, res, next) => {
 
     const updates = { ...req.body };
     if (req.file) {
-      updates.fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+      updates.fileUrl = req.file.path;
     }
 
     Object.assign(material, updates);
