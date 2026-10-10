@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { FaClock, FaCheckCircle, FaExclamationCircle, FaQuestionCircle, FaBookmark, FaBars } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FaClock, FaCheckCircle, FaExclamationCircle, FaBookmark, FaBars } from "react-icons/fa";
 
 const CBTSimulator = () => {
-  const { testId } = useParams();
   const navigate = useNavigate();
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10800); // 3 hours in seconds
@@ -42,7 +41,6 @@ const CBTSimulator = () => {
   };
 
   const activeQuestion = questions[currentQIndex];
-  const activeResponse = responses[currentQIndex] || { status: "not_visited", answer: null };
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
