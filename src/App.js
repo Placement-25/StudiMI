@@ -7,6 +7,9 @@ import Placement from "./components/Placement";
 import Kzone from "./components/KZ";
 import Labs from "./components/Labs";
 import Projects from "./components/Projects";
+import TestCatalog from "./components/TestCatalog";
+import CBTSimulator from "./components/CBTSimulator";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
           <Route path="/Labs" element={<Navigate to="/labs" replace />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/Projects" element={<Navigate to="/projects" replace />} />
+          <Route path="/catalog" element={<TestCatalog />} />
+          <Route path="/simulator/:testId" element={<CBTSimulator />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

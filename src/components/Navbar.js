@@ -19,6 +19,8 @@ const navItems = [
   { path: "/projects", label: "Projects Hub", icon: <FiCode size={16} /> },
   { path: "/knowledge-zone", label: "Knowledge Zone", icon: <FiZap size={16} /> },
   { path: "/placement", label: "Placement Prep", icon: <FiTarget size={16} /> },
+  { path: "/catalog", label: "Exam Catalog", icon: <FiTarget size={16} /> },
+  { path: "/admin", label: "Admin", icon: <FiActivity size={16} /> },
 ];
 
 const Navbar = () => {
